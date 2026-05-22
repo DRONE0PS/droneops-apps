@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/droneops-apps',
   trailingSlash: true,
   images: {
     unoptimized: true,
