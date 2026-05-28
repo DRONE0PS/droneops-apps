@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 
 export default function Dashboard() {
   const metrics = [
@@ -18,9 +17,11 @@ export default function Dashboard() {
 
   return (
     <main style={{background:'#020817',minHeight:'100vh',color:'white',padding:'16px'}}>
-      <div style={{marginBottom:'16px'}}>
-        <a href='/droneops-apps/' style={{color:'#0ea5e9',fontSize:'14px',textDecoration:'none'}}>← Back to Home</a>
-      </div>
+
+      <a href="/droneops-apps/" style={{color:'#0ea5e9',fontSize:'14px',textDecoration:'none',display:'block',marginBottom:'16px'}}>
+        ← Back to Home
+      </a>
+
       <div style={{marginBottom:'24px'}}>
         <h1 style={{color:'#0ea5e9',fontSize:'24px',marginBottom:'8px'}}>FLEET OVERVIEW</h1>
         <p style={{color:'#94a3b8',fontSize:'14px'}}>Welcome back, Operator.</p>
@@ -61,18 +62,21 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px'}}>
         {[
-          {label:'Flight Logs', href:'/dashboard/flights'},
-          {label:'Drones', href:'/dashboard/drones'},
-          {label:'Batteries', href:'/dashboard/batteries'},
-          {label:'Maintenance', href:'/dashboard/maintenance'},
+          {label:'✈️ Flight Logs', href:'/droneops-apps/dashboard/flights'},
+          {label:'🛸 Drones', href:'/droneops-apps/dashboard/drones'},
+          {label:'🔋 Batteries', href:'/droneops-apps/dashboard/batteries'},
+          {label:'🔧 Maintenance', href:'/droneops-apps/dashboard/maintenance'},
+          {label:'⚠️ Incidents', href:'/droneops-apps/dashboard/incidents'},
+          {label:'📊 Analytics', href:'/droneops-apps/dashboard/analytics'},
         ].map((item,i) => (
-          <Link key={i} href={item.href} style={{background:'rgba(14,165,233,0.1)',border:'1px solid rgba(14,165,233,0.3)',color:'#0ea5e9',padding:'10px 16px',borderRadius:'10px',fontSize:'13px',textDecoration:'none'}}>
+          <a key={i} href={item.href} style={{background:'rgba(14,165,233,0.1)',border:'1px solid rgba(14,165,233,0.3)',color:'#0ea5e9',padding:'12px 16px',borderRadius:'10px',fontSize:'13px',textDecoration:'none',textAlign:'center'}}>
             {item.label}
-          </Link>
+          </a>
         ))}
       </div>
+
     </main>
   )
 }
