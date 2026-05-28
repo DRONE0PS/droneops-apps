@@ -18,6 +18,9 @@ export default function Dashboard() {
 
   return (
     <main style={{background:'#020817',minHeight:'100vh',color:'white',padding:'16px'}}>
+      <div style={{marginBottom:'16px'}}>
+        <a href='/droneops-apps/' style={{color:'#0ea5e9',fontSize:'14px',textDecoration:'none'}}>← Back to Home</a>
+      </div>
       <div style={{marginBottom:'24px'}}>
         <h1 style={{color:'#0ea5e9',fontSize:'24px',marginBottom:'8px'}}>FLEET OVERVIEW</h1>
         <p style={{color:'#94a3b8',fontSize:'14px'}}>Welcome back, Operator.</p>
