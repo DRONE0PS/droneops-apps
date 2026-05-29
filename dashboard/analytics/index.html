@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Analytics</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px}
+.back{color:#0ea5e9;font-size:14px;text-decoration:none;display:block;margin-bottom:16px}
+h1{color:#0ea5e9;font-size:24px;margin-bottom:8px}
+.sub{color:#94a3b8;font-size:14px;margin-bottom:24px}
+.card{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:16px;padding:16px;margin-bottom:16px}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.label{color:#94a3b8;font-size:12px}
+.value{color:white;font-size:12px;font-weight:600}
+.bar-bg{background:#1e293b;border-radius:999px;height:8px;margin-top:4px}
+.bar{height:8px;border-radius:999px;background:#0ea5e9}
+</style>
+</head>
+<body>
+<a href="/droneops-apps/" class="back">← Back to Home</a>
+<h1>FLIGHT ANALYTICS</h1>
+<p class="sub">Data insights and performance reports</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#0ea5e9;font-size:20px;font-weight:900">247</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Total Flights</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#0ea5e9;font-size:20px;font-weight:900">1,247h</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Flight Hours</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#4ade80;font-size:20px;font-weight:900">94%</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Success Rate</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#0ea5e9;font-size:20px;font-weight:900">8,432km</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Total Distance</div>
+  </div>
+</div>
+
+<h2 style="color:white;font-size:16px;margin-bottom:16px">MONTHLY FLIGHTS</h2>
+<div class="card">
+  <div style="margin-bottom:12px">
+    <div class="row"><span class="label">January</span><span class="value">42 flights</span></div>
+    <div class="bar-bg"><div class="bar" style="width:70%"></div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <div class="row"><span class="label">February</span><span class="value">38 flights</span></div>
+    <div class="bar-bg"><div class="bar" style="width:63%"></div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <div class="row"><span class="label">March</span><span class="value">55 flights</span></div>
+    <div class="bar-bg"><div class="bar" style="width:92%"></div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <div class="row"><span class="label">April</span><span class="value">48 flights</span></div>
+    <div class="bar-bg"><div class="bar" style="width:80%"></div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <div class="row"><span class="label">May</span><span class="value">64 flights</span></div>
+    <div class="bar-bg"><div class="bar" style="width:100%"></div></div>
+  </div>
+</div>
+
+<h2 style="color:white;font-size:16px;margin-bottom:16px">TOP PILOTS</h2>
+<div class="card">
+  <div style="margin-bottom:12px">
+    <div class="row">
+      <span style="color:white;font-size:13px;font-weight:600">J. Martinez</span>
+      <span style="color:#0ea5e9;font-size:13px">87 flights</span>
+    </div>
+    <div class="bar-bg"><div class="bar" style="width:100%"></div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <div class="row">
+      <span style="color:white;font-size:13px;font-weight:600">S. Johnson</span>
+      <span style="color:#0ea5e9;font-size:13px">72 flights</span>
+    </div>
+    <div class="bar-bg"><div class="bar" style="width:83%"></div></div>
+  </div>
+  <div style="margin-bottom:12px">
+    <div class="row">
+      <span style="color:white;font-size:13px;font-weight:600">A. Chen</span>
+      <span style="color:#0ea5e9;font-size:13px">65 flights</span>
+    </div>
+    <div class="bar-bg"><div class="bar" style="width:75%"></div></div>
+  </div>
+  <div>
+    <div class="row">
+      <span style="color:white;font-size:13px;font-weight:600">K. Williams</span>
+      <span style="color:#0ea5e9;font-size:13px">58 flights</span>
+    </div>
+    <div class="bar-bg"><div class="bar" style="width:67%"></div></div>
+  </div>
+</div>
+
+</body>
+</html>
