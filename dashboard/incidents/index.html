@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Incidents</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px}
+.back{color:#0ea5e9;font-size:14px;text-decoration:none;display:block;margin-bottom:16px}
+h1{color:#0ea5e9;font-size:24px;margin-bottom:8px}
+.sub{color:#94a3b8;font-size:14px;margin-bottom:24px}
+.card{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:16px;padding:16px;margin-bottom:16px}
+.badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.label{color:#94a3b8;font-size:12px}
+.value{color:white;font-size:12px;font-weight:600}
+</style>
+</head>
+<body>
+<a href="/droneops-apps/" class="back">← Back to Home</a>
+<h1>INCIDENTS</h1>
+<p class="sub">Incident reports and severity tracking</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px">
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#f87171;font-size:20px;font-weight:900">2</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Critical</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#facc15;font-size:20px;font-weight:900">4</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Medium</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#4ade80;font-size:20px;font-weight:900">12</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Resolved</div>
+  </div>
+</div>
+<h2 style="color:white;font-size:16px;margin-bottom:16px">RECENT INCIDENTS</h2>
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">INC-001</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Falcon X1 — Crash Landing</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">GPS signal lost during mission</div>
+    </div>
+    <span class="badge" style="background:rgba(239,68,68,0.2);color:#f87171">Critical</span>
+  </div>
+  <div class="row"><span class="label">Date</span><span class="value">May 18, 2025</span></div>
+  <div class="row"><span class="label">Pilot</span><span class="value">J. Martinez</span></div>
+  <div class="row"><span class="label">Status</span><span class="value" style="color:#facc15">Under Investigation</span></div>
+</div>
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">INC-002</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Raptor V2 — Battery Failure</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">Sudden power loss mid-flight</div>
+    </div>
+    <span class="badge" style="background:rgba(239,68,68,0.2);color:#f87171">Critical</span>
+  </div>
+  <div class="row"><span class="label">Date</span><span class="value">May 20, 2025</span></div>
+  <div class="row"><span class="label">Pilot</span><span class="value">A. Chen</span></div>
+  <div class="row"><span class="label">Status</span><span class="value" style="color:#f87171">Open</span></div>
+</div>
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">INC-003</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Shadow Pro — Minor Collision</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">Hit obstacle during survey</div>
+    </div>
+    <span class="badge" style="background:rgba(234,179,8,0.2);color:#facc15">Medium</span>
+  </div>
+  <div class="row"><span class="label">Date</span><span class="value">May 21, 2025</span></div>
+  <div class="row"><span class="label">Pilot</span><span class="value">K. Williams</span></div>
+  <div class="row"><span class="label">Status</span><span class="value" style="color:#4ade80">Resolved</span></div>
+</div>
+</body>
+</html>
