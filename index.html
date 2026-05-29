@@ -4,91 +4,136 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DroneOps — Fleet Management</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#020817;color:white;font-family:'Inter',sans-serif}
-nav{position:fixed;top:0;left:0;right:0;background:rgba(2,8,23,0.95);border-bottom:1px solid rgba(14,165,233,0.2);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;z-index:999}
-.btn{background:#0ea5e9;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;padding-top:80px}
-.badge{color:#0ea5e9;font-size:13px;border:1px solid rgba(14,165,233,0.3);padding:6px 16px;border-radius:999px;margin-bottom:20px;display:inline-block}
-h1{font-family:'Orbitron',sans-serif;font-size:38px;font-weight:900;line-height:1.2;margin-bottom:16px}
-.blue{color:#0ea5e9}
-.hero p{color:#94a3b8;font-size:15px;max-width:400px;margin-bottom:32px;line-height:1.6}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px 24px;max-width:600px;margin:0 auto}
-.stat{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:12px;padding:16px;text-align:center}
-.stat-val{color:#0ea5e9;font-size:18px;font-weight:900}
-.stat-lab{color:#94a3b8;font-size:11px;margin-top:4px}
-.features{padding:60px 24px}
-.features h2{text-align:center;font-family:'Orbitron',sans-serif;font-size:24px;margin-bottom:8px}
-.features p{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:40px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;margin:0 auto}
-.card{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:16px;padding:20px;text-decoration:none;display:block;transition:border-color 0.2s,transform 0.2s}
-.card:hover{border-color:rgba(14,165,233,0.6);transform:translateY(-2px)}
-.card-icon{font-size:28px;margin-bottom:8px}
-.card-title{color:white;font-weight:700;font-size:14px;margin-bottom:4px}
-.card-desc{color:#94a3b8;font-size:12px}
-.cta{padding:40px 24px;text-align:center}
-.cta-box{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:24px;padding:40px 24px;max-width:500px;margin:0 auto}
-.cta-box h2{font-family:'Orbitron',sans-serif;font-size:22px;margin-bottom:12px}
-.cta-box p{color:#94a3b8;font-size:14px;margin-bottom:24px}
-footer{padding:24px;border-top:1px solid rgba(14,165,233,0.1);text-align:center;color:#94a3b8;font-size:13px}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.15)}
+.logo{height:36px}
+.nav-btn{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;padding:10px 22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:0.5px;box-shadow:0 0 20px rgba(14,165,233,0.3)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;padding-top:90px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,0.12) 0%,transparent 70%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(14,165,233,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.hero-logo{width:160px;margin-bottom:28px;filter:drop-shadow(0 0 20px rgba(14,165,233,0.4))}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.25);border-radius:999px;padding:8px 18px;margin-bottom:24px}
+.badge-dot{width:8px;height:8px;background:#0ea5e9;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.badge-text{color:#0ea5e9;font-size:13px;font-weight:500}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;line-height:1.15;margin-bottom:8px;letter-spacing:1px}
+.hero h1 span{background:linear-gradient(135deg,#0ea5e9,#38bdf8,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:#94a3b8;font-size:15px;max-width:380px;margin:16px auto 32px;line-height:1.7}
+.hero-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px}
+.btn-primary{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;padding:16px 32px;border-radius:12px;text-decoration:none;font-size:15px;font-weight:700;font-family:'Orbitron',sans-serif;letter-spacing:1px;box-shadow:0 0 30px rgba(14,165,233,0.35);text-align:center}
+.btn-secondary{background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.25);color:#94a3b8;padding:14px 32px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:500;text-align:center}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:24px;max-width:500px;margin:0 auto}
+.stat{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.15);border-radius:16px;padding:20px;text-align:center;backdrop-filter:blur(10px)}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;background:linear-gradient(135deg,#0ea5e9,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lab{color:#64748b;font-size:11px;margin-top:6px;letter-spacing:0.5px}
+
+/* FEATURES */
+.features{padding:60px 20px}
+.section-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;text-align:center;margin-bottom:8px;letter-spacing:1px}
+.section-sub{color:#64748b;font-size:14px;text-align:center;margin-bottom:36px;line-height:1.6}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:500px;margin:0 auto}
+.card{background:rgba(15,23,42,0.7);border:1px solid rgba(14,165,233,0.15);border-radius:20px;padding:20px;text-decoration:none;display:block;transition:all 0.3s;position:relative;overflow:hidden;backdrop-filter:blur(10px)}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,165,233,0.05),transparent);opacity:0;transition:opacity 0.3s}
+.card:hover::before{opacity:1}
+.card:hover{border-color:rgba(14,165,233,0.4);transform:translateY(-3px);box-shadow:0 8px 30px rgba(14,165,233,0.15)}
+.card-icon{font-size:32px;margin-bottom:12px;display:block}
+.card-title{color:white;font-weight:700;font-size:14px;margin-bottom:6px;letter-spacing:0.3px}
+.card-desc{color:#64748b;font-size:12px;line-height:1.5}
+
+/* CTA */
+.cta{padding:40px 20px 60px}
+.cta-box{background:linear-gradient(135deg,rgba(14,165,233,0.08),rgba(6,182,212,0.05));border:1px solid rgba(14,165,233,0.2);border-radius:28px;padding:40px 24px;max-width:480px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(14,165,233,0.05) 0%,transparent 60%);pointer-events:none}
+.cta-box h2{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;margin-bottom:12px;letter-spacing:1px}
+.cta-box p{color:#64748b;font-size:14px;margin-bottom:24px;line-height:1.6}
+
+/* FOOTER */
+footer{padding:24px;border-top:1px solid rgba(14,165,233,0.08);text-align:center}
+footer p{color:#334155;font-size:12px}
 </style>
 </head>
 <body>
 
 <nav>
-  <img src="logo.png" alt="DroneOps" style="height:36px">
-  <a href="dashboard/" class="btn">Get Started</a>
+  <img src="logo.png" alt="DroneOps" class="logo">
+  <a href="dashboard/" class="nav-btn">Get Started</a>
 </nav>
 
 <div class="hero">
-  <img src="logo.png" alt="DroneOps" style="width:180px;margin-bottom:24px">
-  <span class="badge">Next Generation Fleet Management</span>
-  <h1>COMMAND YOUR<br><span class="blue">DRONE FLEET</span></h1>
-  <p>The most advanced drone fleet management platform for professional operators.</p>
-  <a href="dashboard/" class="btn" style="padding:14px 36px;font-size:16px;margin-bottom:12px">LAUNCH DASHBOARD</a>
-  <a href="#features" style="color:#94a3b8;font-size:13px;text-decoration:none">See Features ↓</a>
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <img src="logo.png" alt="DroneOps" class="hero-logo">
+  <div class="badge">
+    <span class="badge-dot"></span>
+    <span class="badge-text">Next Generation Fleet Management</span>
+  </div>
+  <h1>COMMAND YOUR<br><span>DRONE FLEET</span></h1>
+  <p>The most advanced drone fleet management platform. Monitor, control, and optimize your entire operation.</p>
+  <div class="hero-btns">
+    <a href="dashboard/" class="btn-primary">LAUNCH DASHBOARD</a>
+    <a href="#features" class="btn-secondary">Explore Features ↓</a>
+  </div>
 </div>
 
 <div class="stats">
-  <div class="stat"><div class="stat-val">10K+</div><div class="stat-lab">Drones</div></div>
-  <div class="stat"><div class="stat-val">99.9%</div><div class="stat-lab">Uptime</div></div>
-  <div class="stat"><div class="stat-val">500+</div><div class="stat-lab">Companies</div></div>
-  <div class="stat"><div class="stat-val">2M+</div><div class="stat-lab">Hours</div></div>
+  <div class="stat">
+    <div class="stat-val">10K+</div>
+    <div class="stat-lab">DRONES MANAGED</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">99.9%</div>
+    <div class="stat-lab">UPTIME</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">500+</div>
+    <div class="stat-lab">COMPANIES</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">2M+</div>
+    <div class="stat-lab">FLIGHT HOURS</div>
+  </div>
 </div>
 
 <div class="features" id="features">
-  <h2>EVERYTHING YOU NEED</h2>
-  <p>A complete suite of tools for professional drone fleet management</p>
+  <p class="section-title">EVERYTHING YOU NEED</p>
+  <p class="section-sub">A complete suite of tools for professional drone fleet management</p>
   <div class="grid">
     <a href="dashboard/" class="card">
-      <div class="card-icon">🛸</div>
+      <span class="card-icon">🛸</span>
       <div class="card-title">Fleet Overview</div>
-      <div class="card-desc">Real-time drone monitoring</div>
+      <div class="card-desc">Real-time drone monitoring and status</div>
     </a>
     <a href="dashboard/batteries/" class="card">
-      <div class="card-icon">🔋</div>
+      <span class="card-icon">🔋</span>
       <div class="card-title">Battery Analytics</div>
-      <div class="card-desc">Health and charge tracking</div>
+      <div class="card-desc">Health and charge cycle tracking</div>
     </a>
     <a href="dashboard/analytics/" class="card">
-      <div class="card-icon">📊</div>
+      <span class="card-icon">📊</span>
       <div class="card-title">Flight Analytics</div>
-      <div class="card-desc">Data insights and reports</div>
+      <div class="card-desc">Data insights and performance</div>
     </a>
     <a href="dashboard/maintenance/" class="card">
-      <div class="card-icon">🔧</div>
+      <span class="card-icon">🔧</span>
       <div class="card-title">Maintenance</div>
-      <div class="card-desc">Automated scheduling</div>
+      <div class="card-desc">Automated service scheduling</div>
     </a>
     <a href="dashboard/flights/" class="card">
-      <div class="card-icon">📋</div>
+      <span class="card-icon">📋</span>
       <div class="card-title">Flight Logs</div>
       <div class="card-desc">Complete mission history</div>
     </a>
     <a href="dashboard/incidents/" class="card">
-      <div class="card-icon">⚠️</div>
+      <span class="card-icon">⚠️</span>
       <div class="card-title">Incidents</div>
       <div class="card-desc">Report and track issues</div>
     </a>
@@ -98,12 +143,14 @@ footer{padding:24px;border-top:1px solid rgba(14,165,233,0.1);text-align:center;
 <div class="cta">
   <div class="cta-box">
     <h2>READY TO TAKE COMMAND?</h2>
-    <p>Join 500+ drone companies already using DroneOps.</p>
-    <a href="dashboard/" class="btn" style="padding:14px 32px;font-size:15px">START FREE TRIAL</a>
+    <p>Join 500+ drone companies already using DroneOps to manage their fleets more efficiently.</p>
+    <a href="dashboard/" class="btn-primary" style="display:inline-block">START FREE TRIAL</a>
   </div>
 </div>
 
-<footer>© 2025 DroneOps. All rights reserved.</footer>
+<footer>
+  <p>© 2025 DroneOps. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
