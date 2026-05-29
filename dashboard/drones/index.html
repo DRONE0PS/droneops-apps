@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Drone Fleet</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px}
+.back{color:#0ea5e9;font-size:14px;text-decoration:none;display:block;margin-bottom:16px}
+h1{color:#0ea5e9;font-size:24px;margin-bottom:8px}
+.sub{color:#94a3b8;font-size:14px;margin-bottom:24px}
+.card{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:16px;padding:16px;margin-bottom:16px}
+.badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.label{color:#94a3b8;font-size:12px}
+.value{color:white;font-size:12px;font-weight:600}
+.bar-bg{background:#1e293b;border-radius:999px;height:8px;margin-top:4px}
+</style>
+</head>
+<body>
+<a href="/droneops-apps/" class="back">← Back to Home</a>
+<h1>DRONE FLEET</h1>
+<p class="sub">Complete drone inventory and status</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px">
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#4ade80;font-size:20px;font-weight:900">8</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Active</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#facc15;font-size:20px;font-weight:900">2</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Charging</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px">
+    <div style="color:#f87171;font-size:20px;font-weight:900">2</div>
+    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Maintenance</div>
+  </div>
+</div>
+
+<h2 style="color:white;font-size:16px;margin-bottom:16px">ALL DRONES</h2>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-001</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Falcon X1</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">DJI Matrice 300 RTK</div>
+    </div>
+    <span class="badge" style="background:rgba(34,197,94,0.2);color:#4ade80">Active</span>
+  </div>
+  <div class="row"><span class="label">Battery</span><span class="value">87%</span></div>
+  <div class="row"><span class="label">Location</span><span class="value">Zone A</span></div>
+  <div class="row"><span class="label">Total Flights</span><span class="value">342</span></div>
+  <div class="row"><span class="label">Last Flight</span><span class="value">Today 09:30</span></div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-002</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Raptor V2</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">Autel EVO II Pro</div>
+    </div>
+    <span class="badge" style="background:rgba(234,179,8,0.2);color:#facc15">Charging</span>
+  </div>
+  <div class="row"><span class="label">Battery</span><span class="value">45%</span></div>
+  <div class="row"><span class="label">Location</span><span class="value">Base Station</span></div>
+  <div class="row"><span class="label">Total Flights</span><span class="value">218</span></div>
+  <div class="row"><span class="label">Last Flight</span><span class="value">Yesterday 14:20</span></div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-003</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Shadow Pro</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">Skydio 2+</div>
+    </div>
+    <span class="badge" style="background:rgba(239,68,68,0.2);color:#f87171">Maintenance</span>
+  </div>
+  <div class="row"><span class="label">Battery</span><span class="value">12%</span></div>
+  <div class="row"><span class="label">Location</span><span class="value">Hangar B</span></div>
+  <div class="row"><span class="label">Total Flights</span><span class="value">487</span></div>
+  <div class="row"><span class="label">Last Flight</span><span class="value">May 21 11:00</span></div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-004</div>
+      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Eagle Eye</div>
+      <div style="color:#94a3b8;font-size:12px;margin-top:2px">DJI Phantom 4 RTK</div>
+    </div>
+    <span class="badge" style="background:rgba(34,197,94,0.2);color:#4ade80">Active</span>
+  </div>
+  <div class="row"><span class="label">Battery</span><span class="value">92%</span></div>
+  <div class="row"><span class="label">Location</span><span class="value">Zone C</span></div>
+  <div class="row"><span class="label">Total Flights</span><span class="value">156</span></div>
+  <div class="row"><span class="label">Last Flight</span><span class="value">Today 11:45</span></div>
+</div>
+
+</body>
+</html>
