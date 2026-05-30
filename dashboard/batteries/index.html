@@ -4,122 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DroneOps — Battery Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px}
-.back{color:#0ea5e9;font-size:14px;text-decoration:none;display:block;margin-bottom:16px}
-h1{color:#0ea5e9;font-size:24px;margin-bottom:8px}
-.sub{color:#94a3b8;font-size:14px;margin-bottom:24px}
-.card{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:16px;padding:16px;margin-bottom:16px}
-.battery-name{color:white;font-size:15px;font-weight:700;margin-bottom:4px}
-.battery-id{color:#0ea5e9;font-size:12px;font-family:monospace;margin-bottom:12px}
-.bar-bg{background:#1e293b;border-radius:999px;height:10px;margin-bottom:8px}
-.bar{height:10px;border-radius:999px}
-.row{display:flex;justify-content:space-between;margin-top:8px}
-.label{color:#94a3b8;font-size:12px}
-.value{color:white;font-size:12px;font-weight:600}
-.badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px;padding-top:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none;display:block;margin-bottom:20px}
+h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.sub{color:#334155;font-size:13px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.stat{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:14px;padding:14px;text-align:center}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900}
+.stat-lab{color:#334155;font-size:10px;margin-top:4px}
+.sec{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#94a3b8;margin-bottom:14px}
+.card{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;padding:16px;margin-bottom:12px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.bid{color:#0ea5e9;font-size:11px;font-family:monospace;margin-bottom:2px}
+.bname{color:white;font-size:14px;font-weight:600}
+.badge{padding:4px 10px;border-radius:999px;font-size:10px;font-weight:600}
+.bar-bg{background:#0f172a;border-radius:999px;height:8px;margin-bottom:10px}
+.bar{height:8px;border-radius:999px}
+.row{display:flex;justify-content:space-between;margin-top:6px}
+.rlabel{color:#334155;font-size:11px}
+.rval{color:#94a3b8;font-size:11px;font-weight:600}
 </style>
 </head>
 <body>
-
-<a href="/droneops-apps/" class="back">← Back to Dashboard</a>
-
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+</nav>
+<a href="/droneops-apps/" class="back">← Home</a>
 <h1>BATTERY ANALYTICS</h1>
 <p class="sub">Health monitoring and charge tracking</p>
-
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px">
-  <div class="card" style="text-align:center;padding:12px">
-    <div style="color:#0ea5e9;font-size:20px;font-weight:900">12</div>
-    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Total Batteries</div>
-  </div>
-  <div class="card" style="text-align:center;padding:12px">
-    <div style="color:#4ade80;font-size:20px;font-weight:900">8</div>
-    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Healthy</div>
-  </div>
-  <div class="card" style="text-align:center;padding:12px">
-    <div style="color:#f87171;font-size:20px;font-weight:900">3</div>
-    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Alerts</div>
-  </div>
+<div class="stats">
+  <div class="stat"><div class="stat-val" style="color:#0ea5e9">12</div><div class="stat-lab">TOTAL</div></div>
+  <div class="stat"><div class="stat-val" style="color:#4ade80">8</div><div class="stat-lab">HEALTHY</div></div>
+  <div class="stat"><div class="stat-val" style="color:#f87171">3</div><div class="stat-lab">ALERTS</div></div>
 </div>
-
-<h2 style="color:white;font-size:16px;margin-bottom:16px">BATTERY STATUS</h2>
-
+<p class="sec">BATTERY STATUS</p>
 <div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <div>
-      <div class="battery-id">BAT-001</div>
-      <div class="battery-name">Falcon X1 — Primary</div>
-    </div>
-    <span class="badge" style="background:rgba(34,197,94,0.2);color:#4ade80">Healthy</span>
+  <div class="top">
+    <div><div class="bid">BAT-001</div><div class="bname">Falcon X1 — Primary</div></div>
+    <span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">HEALTHY</span>
   </div>
-  <div class="bar-bg"><div class="bar" style="width:87%;background:#4ade80"></div></div>
-  <div class="row">
-    <span class="label">Charge: 87%</span>
-    <span class="value">Cycles: 142</span>
-  </div>
-  <div class="row">
-    <span class="label">Temp: 28°C</span>
-    <span class="value">Est. Life: 8 months</span>
-  </div>
+  <div class="bar-bg"><div class="bar" style="width:87%;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div>
+  <div class="row"><span class="rlabel">Charge: 87%</span><span class="rval">Cycles: 142</span></div>
+  <div class="row"><span class="rlabel">Temp: 28°C</span><span class="rval">Est. Life: 8 months</span></div>
 </div>
-
 <div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <div>
-      <div class="battery-id">BAT-002</div>
-      <div class="battery-name">Raptor V2 — Primary</div>
-    </div>
-    <span class="badge" style="background:rgba(234,179,8,0.2);color:#facc15">Charging</span>
+  <div class="top">
+    <div><div class="bid">BAT-002</div><div class="bname">Raptor V2 — Primary</div></div>
+    <span class="badge" style="background:rgba(234,179,8,0.15);color:#facc15">CHARGING</span>
   </div>
-  <div class="bar-bg"><div class="bar" style="width:45%;background:#facc15"></div></div>
-  <div class="row">
-    <span class="label">Charge: 45%</span>
-    <span class="value">Cycles: 287</span>
-  </div>
-  <div class="row">
-    <span class="label">Temp: 32°C</span>
-    <span class="value">Est. Life: 4 months</span>
-  </div>
+  <div class="bar-bg"><div class="bar" style="width:45%;background:linear-gradient(90deg,#facc15,#eab308)"></div></div>
+  <div class="row"><span class="rlabel">Charge: 45%</span><span class="rval">Cycles: 287</span></div>
+  <div class="row"><span class="rlabel">Temp: 32°C</span><span class="rval">Est. Life: 4 months</span></div>
 </div>
-
 <div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <div>
-      <div class="battery-id">BAT-003</div>
-      <div class="battery-name">Shadow Pro — Primary</div>
-    </div>
-    <span class="badge" style="background:rgba(239,68,68,0.2);color:#f87171">Critical</span>
+  <div class="top">
+    <div><div class="bid">BAT-003</div><div class="bname">Shadow Pro — Primary</div></div>
+    <span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171">CRITICAL</span>
   </div>
-  <div class="bar-bg"><div class="bar" style="width:12%;background:#f87171"></div></div>
-  <div class="row">
-    <span class="label">Charge: 12%</span>
-    <span class="value">Cycles: 489</span>
-  </div>
-  <div class="row">
-    <span class="label">Temp: 41°C</span>
-    <span class="value">Replace Soon!</span>
-  </div>
+  <div class="bar-bg"><div class="bar" style="width:12%;background:linear-gradient(90deg,#f87171,#ef4444)"></div></div>
+  <div class="row"><span class="rlabel">Charge: 12%</span><span class="rval">Cycles: 489</span></div>
+  <div class="row"><span class="rlabel">Temp: 41°C</span><span class="rval" style="color:#f87171">Replace Soon!</span></div>
 </div>
-
 <div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <div>
-      <div class="battery-id">BAT-004</div>
-      <div class="battery-name">Eagle Eye — Primary</div>
-    </div>
-    <span class="badge" style="background:rgba(34,197,94,0.2);color:#4ade80">Healthy</span>
+  <div class="top">
+    <div><div class="bid">BAT-004</div><div class="bname">Eagle Eye — Primary</div></div>
+    <span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">HEALTHY</span>
   </div>
-  <div class="bar-bg"><div class="bar" style="width:92%;background:#4ade80"></div></div>
-  <div class="row">
-    <span class="label">Charge: 92%</span>
-    <span class="value">Cycles: 98</span>
-  </div>
-  <div class="row">
-    <span class="label">Temp: 26°C</span>
-    <span class="value">Est. Life: 11 months</span>
-  </div>
+  <div class="bar-bg"><div class="bar" style="width:92%;background:linear-gradient(90deg,#4ade80,#22c55e)"></div></div>
+  <div class="row"><span class="rlabel">Charge: 92%</span><span class="rval">Cycles: 98</span></div>
+  <div class="row"><span class="rlabel">Temp: 26°C</span><span class="rval">Est. Life: 11 months</span></div>
 </div>
-
 </body>
 </html>
