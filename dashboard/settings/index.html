@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px;padding-top:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none;display:block;margin-bottom:20px}
+h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.sub{color:#334155;font-size:13px;margin-bottom:24px}
+.sec{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px;color:#94a3b8;margin-bottom:12px;margin-top:24px}
+.card{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;overflow:hidden;margin-bottom:4px}
+.item{padding:14px 16px;border-bottom:1px solid rgba(14,165,233,0.05);display:flex;justify-content:space-between;align-items:center}
+.item:last-child{border-bottom:none}
+.item-label{color:#e2e8f0;font-size:13px;font-weight:500}
+.item-sub{color:#334155;font-size:11px;margin-top:2px}
+.item-val{color:#94a3b8;font-size:13px}
+.toggle{width:44px;height:24px;background:rgba(14,165,233,0.3);border-radius:999px;position:relative;cursor:pointer}
+.toggle.on{background:linear-gradient(135deg,#0ea5e9,#06b6d4)}
+.toggle-dot{width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left 0.2s}
+.toggle.on .toggle-dot{left:23px}
+.avatar{width:56px;height:56px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:20px;color:white;margin-bottom:12px;box-shadow:0 0 20px rgba(14,165,233,0.3)}
+.profile-card{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;padding:20px;margin-bottom:4px;text-align:center}
+.profile-name{color:white;font-size:16px;font-weight:700;margin-bottom:4px}
+.profile-email{color:#334155;font-size:13px;margin-bottom:4px}
+.profile-company{color:#0ea5e9;font-size:12px}
+.plan-card{border-radius:16px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden}
+.plan-free{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1)}
+.plan-pro{background:rgba(14,165,233,0.08);border:2px solid rgba(14,165,233,0.4)}
+.plan-enterprise{background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.2)}
+.plan-badge{position:absolute;top:14px;right:14px;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:0.5px}
+.plan-current{background:rgba(14,165,233,0.2);color:#0ea5e9}
+.plan-popular{background:rgba(14,165,233,0.15);color:#38bdf8}
+.plan-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;letter-spacing:1px;margin-bottom:4px}
+.plan-price{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;background:linear-gradient(135deg,#0ea5e9,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.plan-price span{font-size:14px;color:#334155;font-family:'Inter',sans-serif}
+.plan-feature{color:#94a3b8;font-size:12px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.plan-feature::before{content:'✓';color:#0ea5e9;font-weight:700}
+.plan-btn{width:100%;padding:12px;border-radius:10px;font-size:13px;font-weight:600;font-family:'Orbitron',sans-serif;letter-spacing:1px;border:none;cursor:pointer;margin-top:14px;text-align:center;display:block;text-decoration:none}
+.btn-current{background:rgba(14,165,233,0.1);color:#0ea5e9;border:1px solid rgba(14,165,233,0.3)}
+.btn-upgrade{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;box-shadow:0 0 20px rgba(14,165,233,0.3)}
+.btn-contact{background:rgba(6,182,212,0.1);color:#06b6d4;border:1px solid rgba(6,182,212,0.3)}
+.select{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.15);color:#94a3b8;padding:6px 10px;border-radius:8px;font-size:12px}
+.danger-btn{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+.about-val{color:#334155;font-size:12px}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+</nav>
+<a href="/droneops-apps/" class="back">← Home</a>
+<h1>SETTINGS</h1>
+<p class="sub">Manage your account and preferences</p>
+
+<p class="sec" style="margin-top:0">PROFILE</p>
+<div class="profile-card">
+  <div style="display:flex;justify-content:center">
+    <div class="avatar">OP</div>
+  </div>
+  <div class="profile-name">Drone Operator</div>
+  <div class="profile-email">operator@droneops.io</div>
+  <div class="profile-company">DroneOps Pro Account</div>
+</div>
+<div class="card">
+  <div class="item">
+    <div><div class="item-label">Full Name</div></div>
+    <span class="item-val">Drone Operator</span>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Company</div></div>
+    <span class="item-val">DroneOps Inc.</span>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Email</div></div>
+    <span class="item-val">operator@droneops.io</span>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Phone</div></div>
+    <span class="item-val">+1 234 567 8900</span>
+  </div>
+</div>
+
+<p class="sec">NOTIFICATIONS</p>
+<div class="card">
+  <div class="item">
+    <div><div class="item-label">Battery Alerts</div><div class="item-sub">Low battery warnings</div></div>
+    <div class="toggle on"><div class="toggle-dot"></div></div>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Maintenance Reminders</div><div class="item-sub">Service due alerts</div></div>
+    <div class="toggle on"><div class="toggle-dot"></div></div>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Incident Alerts</div><div class="item-sub">Critical notifications</div></div>
+    <div class="toggle on"><div class="toggle-dot"></div></div>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Mission Updates</div><div class="item-sub">Flight status changes</div></div>
+    <div class="toggle"><div class="toggle-dot"></div></div>
+  </div>
+</div>
+
+<p class="sec">PREFERENCES</p>
+<div class="card">
+  <div class="item">
+    <div><div class="item-label">Distance Units</div></div>
+    <select class="select">
+      <option>Kilometers</option>
+      <option>Miles</option>
+    </select>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Temperature</div></div>
+    <select class="select">
+      <option>Celsius °C</option>
+      <option>Fahrenheit °F</option>
+    </select>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Time Format</div></div>
+    <select class="select">
+      <option>24 Hour</option>
+      <option>12 Hour</option>
+    </select>
+  </div>
+</div>
+
+<p class="sec">SUBSCRIPTION PLANS</p>
+
+<div class="plan-card plan-free">
+  <span class="plan-badge plan-current">CURRENT</span>
+  <div class="plan-name">FREE</div>
+  <div class="plan-price">$0<span>/month</span></div>
+  <div class="plan-feature">Up to 2 drones</div>
+  <div class="plan-feature">Basic flight logs</div>
+  <div class="plan-feature">15 day history</div>
+  <a class="plan-btn btn-current">Current Plan</a>
+</div>
+
+<div class="plan-card plan-pro">
+  <span class="plan-badge plan-popular">POPULAR</span>
+  <div class="plan-name" style="color:#0ea5e9">PRO</div>
+  <div class="plan-price">$21<span>/month</span></div>
+  <div class="plan-feature">Up to 20 drones</div>
+  <div class="plan-feature">Advanced analytics</div>
+  <div class="plan-feature">30 day history</div>
+  <div class="plan-feature">Battery predictions</div>
+  <a class="plan-btn btn-upgrade">Upgrade to Pro</a>
+</div>
+
+<div class="plan-card plan-enterprise">
+  <div class="plan-name" style="color:#06b6d4">ENTERPRISE</div>
+  <div class="plan-price" style="background:linear-gradient(135deg,#06b6d4,#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">$55<span>/month</span></div>
+  <div class="plan-feature">Up to 50 drones</div>
+  <div class="plan-feature">Custom integration</div>
+  <div class="plan-feature">Dedicated support</div>
+  <div class="plan-feature">White labeling</div>
+  <div class="plan-feature">API access</div>
+  <a class="plan-btn btn-contact">Contact Sales</a>
+</div>
+
+<p class="sec">ACCOUNT</p>
+<div class="card">
+  <div class="item">
+    <div><div class="item-label">Change Password</div></div>
+    <span class="item-val">→</span>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Two Factor Auth</div><div class="item-sub">Extra security</div></div>
+    <div class="toggle"><div class="toggle-dot"></div></div>
+  </div>
+  <div class="item">
+    <div><div class="item-label">Export Data</div><div class="item-sub">Download your data</div></div>
+    <span class="item-val">→</span>
+  </div>
+</div>
+
+<p class="sec">ABOUT</p>
+<div class="card">
+  <div class="item">
+    <div class="item-label">App Version</div>
+    <span class="about-val">DroneOps v1.0.0</span>
+  </div>
+  <div class="item">
+    <div class="item-label">Terms of Service</div>
+    <span class="item-val">→</span>
+  </div>
+  <div class="item">
+    <div class="item-label">Privacy Policy</div>
+    <span class="item-val">→</span>
+  </div>
+  <div class="item">
+    <div class="item-label">Contact Support</div>
+    <span class="item-val">→</span>
+  </div>
+</div>
+
+<p class="sec">DANGER ZONE</p>
+<div class="card">
+  <div class="item">
+    <div><div class="item-label" style="color:#f87171">Delete Account</div><div class="item-sub">Permanently remove account</div></div>
+    <button class="danger-btn">Delete</button>
+  </div>
+</div>
+
+<div style="height:40px"></div>
+
+</body>
+</html>
