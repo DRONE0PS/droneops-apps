@@ -4,101 +4,111 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DroneOps — Drone Fleet</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px}
-.back{color:#0ea5e9;font-size:14px;text-decoration:none;display:block;margin-bottom:16px}
-h1{color:#0ea5e9;font-size:24px;margin-bottom:8px}
-.sub{color:#94a3b8;font-size:14px;margin-bottom:24px}
-.card{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2);border-radius:16px;padding:16px;margin-bottom:16px}
-.badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
-.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.label{color:#94a3b8;font-size:12px}
-.value{color:white;font-size:12px;font-weight:600}
-.bar-bg{background:#1e293b;border-radius:999px;height:8px;margin-top:4px}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px;padding-top:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none;display:block;margin-bottom:20px}
+h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.sub{color:#334155;font-size:13px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.stat{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:14px;padding:14px;text-align:center}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900}
+.stat-lab{color:#334155;font-size:10px;margin-top:4px}
+.sec{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#94a3b8;margin-bottom:14px}
+.card{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(14,165,233,0.06),transparent);pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.did{color:#0ea5e9;font-size:11px;font-family:monospace;margin-bottom:2px}
+.dname{color:white;font-size:15px;font-weight:700;margin-bottom:2px}
+.dmodel{color:#334155;font-size:12px}
+.badge{padding:4px 10px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:0.5px}
+.row{display:flex;justify-content:space-between;margin-top:8px}
+.rlabel{color:#334155;font-size:11px}
+.rval{color:#94a3b8;font-size:11px;font-weight:600}
+.bar-bg{background:#0f172a;border-radius:999px;height:4px;margin-top:6px}
+.bar{height:4px;border-radius:999px}
 </style>
 </head>
 <body>
-<a href="/droneops-apps/" class="back">← Back to Home</a>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+</nav>
+<a href="/droneops-apps/" class="back">← Home</a>
 <h1>DRONE FLEET</h1>
 <p class="sub">Complete drone inventory and status</p>
-
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px">
-  <div class="card" style="text-align:center;padding:12px">
-    <div style="color:#4ade80;font-size:20px;font-weight:900">8</div>
-    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Active</div>
-  </div>
-  <div class="card" style="text-align:center;padding:12px">
-    <div style="color:#facc15;font-size:20px;font-weight:900">2</div>
-    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Charging</div>
-  </div>
-  <div class="card" style="text-align:center;padding:12px">
-    <div style="color:#f87171;font-size:20px;font-weight:900">2</div>
-    <div style="color:#94a3b8;font-size:11px;margin-top:4px">Maintenance</div>
-  </div>
+<div class="stats">
+  <div class="stat"><div class="stat-val" style="color:#4ade80">8</div><div class="stat-lab">ACTIVE</div></div>
+  <div class="stat"><div class="stat-val" style="color:#facc15">2</div><div class="stat-lab">CHARGING</div></div>
+  <div class="stat"><div class="stat-val" style="color:#f87171">2</div><div class="stat-lab">MAINTENANCE</div></div>
 </div>
-
-<h2 style="color:white;font-size:16px;margin-bottom:16px">ALL DRONES</h2>
-
+<p class="sec">ALL DRONES</p>
 <div class="card">
-  <div class="row">
+  <div class="top">
     <div>
-      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-001</div>
-      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Falcon X1</div>
-      <div style="color:#94a3b8;font-size:12px;margin-top:2px">DJI Matrice 300 RTK</div>
+      <div class="did">DRN-001</div>
+      <div class="dname">Falcon X1</div>
+      <div class="dmodel">DJI Matrice 300 RTK</div>
     </div>
-    <span class="badge" style="background:rgba(34,197,94,0.2);color:#4ade80">Active</span>
+    <span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">ACTIVE</span>
   </div>
-  <div class="row"><span class="label">Battery</span><span class="value">87%</span></div>
-  <div class="row"><span class="label">Location</span><span class="value">Zone A</span></div>
-  <div class="row"><span class="label">Total Flights</span><span class="value">342</span></div>
-  <div class="row"><span class="label">Last Flight</span><span class="value">Today 09:30</span></div>
+  <div class="bar-bg"><div class="bar" style="width:87%;background:#4ade80"></div></div>
+  <div class="row"><span class="rlabel">Battery</span><span class="rval">87%</span></div>
+  <div class="row"><span class="rlabel">Location</span><span class="rval">Zone A</span></div>
+  <div class="row"><span class="rlabel">Total Flights</span><span class="rval">342</span></div>
+  <div class="row"><span class="rlabel">Last Flight</span><span class="rval">Today 09:30</span></div>
 </div>
-
 <div class="card">
-  <div class="row">
+  <div class="top">
     <div>
-      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-002</div>
-      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Raptor V2</div>
-      <div style="color:#94a3b8;font-size:12px;margin-top:2px">Autel EVO II Pro</div>
+      <div class="did">DRN-002</div>
+      <div class="dname">Raptor V2</div>
+      <div class="dmodel">Autel EVO II Pro</div>
     </div>
-    <span class="badge" style="background:rgba(234,179,8,0.2);color:#facc15">Charging</span>
+    <span class="badge" style="background:rgba(234,179,8,0.15);color:#facc15">CHARGING</span>
   </div>
-  <div class="row"><span class="label">Battery</span><span class="value">45%</span></div>
-  <div class="row"><span class="label">Location</span><span class="value">Base Station</span></div>
-  <div class="row"><span class="label">Total Flights</span><span class="value">218</span></div>
-  <div class="row"><span class="label">Last Flight</span><span class="value">Yesterday 14:20</span></div>
+  <div class="bar-bg"><div class="bar" style="width:45%;background:#facc15"></div></div>
+  <div class="row"><span class="rlabel">Battery</span><span class="rval">45%</span></div>
+  <div class="row"><span class="rlabel">Location</span><span class="rval">Base Station</span></div>
+  <div class="row"><span class="rlabel">Total Flights</span><span class="rval">218</span></div>
+  <div class="row"><span class="rlabel">Last Flight</span><span class="rval">Yesterday 14:20</span></div>
 </div>
-
 <div class="card">
-  <div class="row">
+  <div class="top">
     <div>
-      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-003</div>
-      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Shadow Pro</div>
-      <div style="color:#94a3b8;font-size:12px;margin-top:2px">Skydio 2+</div>
+      <div class="did">DRN-003</div>
+      <div class="dname">Shadow Pro</div>
+      <div class="dmodel">Skydio 2+</div>
     </div>
-    <span class="badge" style="background:rgba(239,68,68,0.2);color:#f87171">Maintenance</span>
+    <span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171">MAINTENANCE</span>
   </div>
-  <div class="row"><span class="label">Battery</span><span class="value">12%</span></div>
-  <div class="row"><span class="label">Location</span><span class="value">Hangar B</span></div>
-  <div class="row"><span class="label">Total Flights</span><span class="value">487</span></div>
-  <div class="row"><span class="label">Last Flight</span><span class="value">May 21 11:00</span></div>
+  <div class="bar-bg"><div class="bar" style="width:12%;background:#f87171"></div></div>
+  <div class="row"><span class="rlabel">Battery</span><span class="rval">12%</span></div>
+  <div class="row"><span class="rlabel">Location</span><span class="rval">Hangar B</span></div>
+  <div class="row"><span class="rlabel">Total Flights</span><span class="rval">487</span></div>
+  <div class="row"><span class="rlabel">Last Flight</span><span class="rval">May 21 11:00</span></div>
 </div>
-
 <div class="card">
-  <div class="row">
+  <div class="top">
     <div>
-      <div style="color:#0ea5e9;font-size:12px;font-family:monospace">DRN-004</div>
-      <div style="color:white;font-size:15px;font-weight:700;margin-top:4px">Eagle Eye</div>
-      <div style="color:#94a3b8;font-size:12px;margin-top:2px">DJI Phantom 4 RTK</div>
+      <div class="did">DRN-004</div>
+      <div class="dname">Eagle Eye</div>
+      <div class="dmodel">DJI Phantom 4 RTK</div>
     </div>
-    <span class="badge" style="background:rgba(34,197,94,0.2);color:#4ade80">Active</span>
+    <span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">ACTIVE</span>
   </div>
-  <div class="row"><span class="label">Battery</span><span class="value">92%</span></div>
-  <div class="row"><span class="label">Location</span><span class="value">Zone C</span></div>
-  <div class="row"><span class="label">Total Flights</span><span class="value">156</span></div>
-  <div class="row"><span class="label">Last Flight</span><span class="value">Today 11:45</span></div>
+  <div class="bar-bg"><div class="bar" style="width:92%;background:#4ade80"></div></div>
+  <div class="row"><span class="rlabel">Battery</span><span class="rval">92%</span></div>
+  <div class="row"><span class="rlabel">Location</span><span class="rval">Zone C</span></div>
+  <div class="row"><span class="rlabel">Total Flights</span><span class="rval">156</span></div>
+  <div class="row"><span class="rlabel">Last Flight</span><span class="rval">Today 11:45</span></div>
 </div>
-
 </body>
 </html>
