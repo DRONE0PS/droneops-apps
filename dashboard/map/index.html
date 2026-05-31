@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Live Fleet Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+nav{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.95);border-bottom:1px solid rgba(14,165,233,0.12);z-index:1000;flex-shrink:0}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none}
+.map-wrap{flex:1;position:relative}
+#map{width:100%;height:100%;z-index:1}
+.overlay{position:absolute;top:12px;left:12px;z-index:1000;display:flex;flex-direction:column;gap:8px}
+.status-card{background:rgba(2,8,23,0.9);border:1px solid rgba(14,165,233,0.2);border-radius:12px;padding:10px 14px;backdrop-filter:blur(10px)}
+.status-title{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;color:#94a3b8;margin-bottom:6px}
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-active{background:#4ade80;box-shadow:0 0 6px #4ade80}
+.dot-charging{background:#facc15;box-shadow:0 0 6px #facc15}
+.dot-maintenance{background:#f87171;box-shadow:0 0 6px #f87171}
+.status-label{color:white;font-size:12px;font-weight:500}
+.status-val{color:#94a3b8;font-size:11px;margin-left:auto}
+.telemetry{position:absolute;bottom:12px;left:12px;right:12px;z-index:1000}
+.tel-card{background:rgba(2,8,23,0.9);border:1px solid rgba(14,165,233,0.2);border-radius:12px;padding:12px 14px;backdrop-filter:blur(10px)}
+.tel-title{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;color:#94a3b8;margin-bottom:8px}
+.tel-feed{display:flex;flex-direction:column;gap:4px}
+.tel-item{display:flex;align-items:center;gap:8px}
+.tel-time{color:#334155;font-size:10px;font-family:monospace;flex-shrink:0}
+.tel-text{color:#94a3b8;font-size:11px}
+.tel-text span{color:#0ea5e9;font-weight:600}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+  <a href="/droneops-apps/" class="back">← Home</a>
+</nav>
+
+<div class="map-wrap">
+  <div id="map"></div>
+
+  <div class="overlay">
+    <div class="status-card">
+      <div class="status-title">LIVE FLEET STATUS</div>
+      <div class="status-row">
+        <div class="dot dot-active pulse"></div>
+        <span class="status-label">Falcon X1</span>
+        <span class="status-val">Zone A</span>
+      </div>
+      <div class="status-row">
+        <div class="dot dot-active pulse"></div>
+        <span class="status-label">Eagle Eye</span>
+        <span class="status-val">Zone C</span>
+      </div>
+      <div class="status-row">
+        <div class="dot dot-charging"></div>
+        <span class="status-label">Raptor V2</span>
+        <span class="status-val">Base</span>
+      </div>
+      <div class="status-row">
+        <div class="dot dot-maintenance"></div>
+        <span class="status-label">Shadow Pro</span>
+        <span class="status-val">Hangar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="telemetry">
+    <div class="tel-card">
+      <div class="tel-title">LIVE TELEMETRY FEED</div>
+      <div class="tel-feed" id="feed">
+        <div class="tel-item">
+          <span class="tel-time">12:34:01</span>
+          <span class="tel-text"><span>Falcon X1</span> Takeoff Successful</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-time">12:34:15</span>
+          <span class="tel-text"><span>Falcon X1</span> Reached Waypoint A</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-time">12:34:48</span>
+          <span class="tel-text"><span>Eagle Eye</span> Battery 87%</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-time">12:35:12</span>
+          <span class="tel-text"><span>Falcon X1</span> Object Detected</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var map = L.map('map', {
+  zoomControl: false
+}).setView([40.7128, -74.0060], 13);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap © CARTO',
+  maxZoom: 19
+}).addTo(map);
+
+L.control.zoom({ position: 'topright' }).addTo(map);
+
+function droneIcon(color, label) {
+  return L.divIcon({
+    className: '',
+    html: '<div style="background:' + color + ';width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 0 12px ' + color + ';font-family:Orbitron,sans-serif;font-size:9px;color:white;font-weight:700;">' + label + '</div>',
+    iconSize: [36, 36],
+    iconAnchor: [18, 18]
+  });
+}
+
+var drone1 = L.marker([40.7128, -74.0060], {icon: droneIcon('#4ade80', 'F1')})
+  .addTo(map)
+  .bindPopup('<b style="font-family:Orbitron,sans-serif">FALCON X1</b><br>Status: Active<br>Battery: 87%<br>Alt: 120m<br>Speed: 12m/s');
+
+var drone2 = L.marker([40.7200, -73.9950], {icon: droneIcon('#4ade80', 'EE')})
+  .addTo(map)
+  .bindPopup('<b style="font-family:Orbitron,sans-serif">EAGLE EYE</b><br>Status: Active<br>Battery: 92%<br>Alt: 200m<br>Speed: 8m/s');
+
+var drone3 = L.marker([40.7050, -74.0100], {icon: droneIcon('#facc15', 'R2')})
+  .addTo(map)
+  .bindPopup('<b style="font-family:Orbitron,sans-serif">RAPTOR V2</b><br>Status: Charging<br>Battery: 45%<br>Location: Base');
+
+var drone4 = L.marker([40.7080, -73.9980], {icon: droneIcon('#f87171', 'SP')})
+  .addTo(map)
+  .bindPopup('<b style="font-family:Orbitron,sans-serif">SHADOW PRO</b><br>Status: Maintenance<br>Battery: 12%<br>Location: Hangar');
+
+var path1 = L.polyline([
+  [40.7128, -74.0060],
+  [40.7150, -74.0020],
+  [40.7180, -73.9990],
+  [40.7200, -73.9950]
+], {color: '#4ade80', weight: 2, opacity: 0.6, dashArray: '5,5'}).addTo(map);
+
+var path2 = L.polyline([
+  [40.7200, -73.9950],
+  [40.7220, -73.9920],
+  [40.7240, -73.9900]
+], {color: '#0ea5e9', weight: 2, opacity: 0.4, dashArray: '5,5'}).addTo(map);
+
+var messages = [
+  'Falcon X1 Waypoint B Reached',
+  'Eagle Eye Battery 91%',
+  'Falcon X1 Speed 14m/s',
+  'Eagle Eye Object Scanned',
+  'Falcon X1 Altitude 115m',
+  'Eagle Eye Mission 60% Complete',
+];
+
+var mi = 0;
+setInterval(function(){
+  var now = new Date();
+  var t = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+  var feed = document.getElementById('feed');
+  var item = document.createElement('div');
+  item.className = 'tel-item';
+  var drone = messages[mi].split(' ')[0]+' '+messages[mi].split(' ')[1];
+  item.innerHTML = '<span class="tel-time">'+t+'</span><span class="tel-text"><span>'+drone+'</span> '+messages[mi].split(' ').slice(2).join(' ')+'</span>';
+  feed.appendChild(item);
+  if(feed.children.length > 4) feed.removeChild(feed.children[0]);
+  mi = (mi+1) % messages.length;
+
+  var pos1 = drone1.getLatLng();
+  drone1.setLatLng([pos1.lat + (Math.random()-0.5)*0.001, pos1.lng + (Math.random()-0.5)*0.001]);
+  var pos2 = drone2.getLatLng();
+  drone2.setLatLng([pos2.lat + (Math.random()-0.5)*0.001, pos2.lng + (Math.random()-0.5)*0.001]);
+}, 3000);
+</script>
+
+</body>
+</html>
