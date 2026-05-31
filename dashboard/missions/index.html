@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Mission Planning</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+nav{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.95);border-bottom:1px solid rgba(14,165,233,0.12);z-index:1000;flex-shrink:0}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.map-wrap{flex:1;position:relative}
+#map{width:100%;height:100%}
+.panel{background:rgba(2,8,23,0.95);border-top:1px solid rgba(14,165,233,0.12);padding:16px;flex-shrink:0;max-height:45vh;overflow-y:auto}
+.panel-title{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#94a3b8;margin-bottom:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.input{width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.15);border-radius:10px;padding:10px 12px;color:white;font-size:13px;font-family:'Inter',sans-serif;outline:none}
+.input::placeholder{color:#334155}
+.select{width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.15);border-radius:10px;padding:10px 12px;color:#94a3b8;font-size:13px;font-family:'Inter',sans-serif;outline:none}
+.waypoints{margin-bottom:12px}
+.waypoint-item{display:flex;align-items:center;gap:8px;margin-bottom:6px;background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:8px;padding:8px 10px}
+.wp-num{width:20px;height:20px;background:rgba(14,165,233,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#0ea5e9;font-size:10px;font-weight:700;flex-shrink:0}
+.wp-coords{color:#94a3b8;font-size:11px;font-family:monospace;flex:1}
+.wp-del{color:#f87171;font-size:14px;cursor:pointer;padding:0 4px}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{padding:12px;border-radius:10px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;border:none;cursor:pointer;text-align:center}
+.btn-clear{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171}
+.btn-launch{background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;box-shadow:0 0 15px rgba(14,165,233,0.3)}
+.hint{color:#334155;font-size:11px;text-align:center;margin-bottom:10px}
+.map-overlay{position:absolute;top:12px;left:12px;z-index:1000}
+.mode-card{background:rgba(2,8,23,0.9);border:1px solid rgba(14,165,233,0.2);border-radius:10px;padding:8px 12px;backdrop-filter:blur(10px)}
+.mode-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:#94a3b8;margin-bottom:6px}
+.mode-btn{display:block;background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.2);border-radius:6px;padding:6px 10px;color:#0ea5e9;font-size:10px;font-family:'Orbitron',sans-serif;cursor:pointer;margin-bottom:4px;text-align:center}
+.mode-btn.active{background:rgba(14,165,233,0.3);border-color:#0ea5e9}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+  <a href="/droneops-apps/" class="back">← Home</a>
+</nav>
+
+<div class="content">
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div class="map-overlay">
+      <div class="mode-card">
+        <div class="mode-title">PLANNING MODE</div>
+        <div class="mode-btn active" id="wpMode">📍 WAYPOINTS</div>
+        <div class="mode-btn" id="areaMode">⬡ AREA</div>
+        <div class="mode-btn" id="viewMode">👁 VIEW</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">MISSION PLANNER</div>
+    <div class="hint">Tap on map to add waypoints</div>
+
+    <div class="form-row">
+      <input class="input" placeholder="Mission name" id="missionName">
+      <select class="select" id="droneSelect">
+        <option value="">Assign drone</option>
+        <option>Falcon X1</option>
+        <option>Eagle Eye</option>
+        <option>Raptor V2</option>
+        <option>Shadow Pro</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <input class="input" type="date" id="missionDate">
+      <input class="input" type="time" id="missionTime">
+    </div>
+
+    <div class="form-row">
+      <input class="input" placeholder="Altitude (m)" id="altitude">
+      <input class="input" placeholder="Speed (m/s)" id="speed">
+    </div>
+
+    <div class="waypoints" id="waypointList"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-clear" onclick="clearMission()">CLEAR ALL</button>
+      <button class="btn btn-launch" onclick="launchMission()">LAUNCH MISSION</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var map = L.map('map', {zoomControl:false}).setView([40.7128, -74.0060], 13);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution:'© OpenStreetMap © CARTO',maxZoom:19
+}).addTo(map);
+
+L.control.zoom({position:'topright'}).addTo(map);
+
+var waypoints = [];
+var markers = [];
+var pathLine = null;
+
+function wpIcon(num) {
+  return L.divIcon({
+    className:'',
+    html:'<div style="background:#0ea5e9;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 0 10px #0ea5e9;font-weight:700;font-size:12px;color:white;">'+num+'</div>',
+    iconSize:[28,28],iconAnchor:[14,14]
+  });
+}
+
+function updatePath() {
+  if(pathLine) map.removeLayer(pathLine);
+  if(waypoints.length > 1) {
+    pathLine = L.polyline(waypoints, {color:'#0ea5e9',weight:2,opacity:0.7,dashArray:'6,4'}).addTo(map);
+  }
+}
+
+function updateList() {
+  var list = document.getElementById('waypointList');
+  list.innerHTML = '';
+  waypoints.forEach(function(wp, i) {
+    var item = document.createElement('div');
+    item.className = 'waypoint-item';
+    item.innerHTML =
+      '<div class="wp-num">'+(i+1)+'</div>'+
+      '<div class="wp-coords">'+wp[0].toFixed(4)+', '+wp[1].toFixed(4)+'</div>'+
+      '<span class="wp-del" onclick="removeWp('+i+')">✕</span>';
+    list.appendChild(item);
+  });
+}
+
+function removeWp(i) {
+  waypoints.splice(i, 1);
+  map.removeLayer(markers[i]);
+  markers.splice(i, 1);
+  markers.forEach(function(m, idx) { m.setIcon(wpIcon(idx+1)); });
+  updatePath();
+  updateList();
+}
+
+map.on('click', function(e) {
+  var idx = waypoints.length + 1;
+  var marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: wpIcon(idx)}).addTo(map);
+  markers.push(marker);
+  waypoints.push([e.latlng.lat, e.latlng.lng]);
+  updatePath();
+  updateList();
+});
+
+function clearMission() {
+  waypoints = [];
+  markers.forEach(function(m) { map.removeLayer(m); });
+  markers = [];
+  if(pathLine) map.removeLayer(pathLine);
+  pathLine = null;
+  updateList();
+}
+
+function launchMission() {
+  var name = document.getElementById('missionName').value;
+  var drone = document.getElementById('droneSelect').value;
+  if(!name || !drone || waypoints.length < 2) {
+    alert('Please fill mission name, assign a drone and add at least 2 waypoints!');
+    return;
+  }
+  alert('Mission "'+name+'" launched!\nDrone: '+drone+'\nWaypoints: '+waypoints.length+'\nStatus: Scheduled ✅');
+}
+
+document.getElementById('wpMode').onclick = function() {
+  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('active')});
+  this.classList.add('active');
+};
+document.getElementById('areaMode').onclick = function() {
+  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('active')});
+  this.classList.add('active');
+};
+document.getElementById('viewMode').onclick = function() {
+  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('active')});
+  this.classList.add('active');
+};
+</script>
+
+</body>
+</html>
