@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Fleet Replay</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+nav{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.95);border-bottom:1px solid rgba(14,165,233,0.12);z-index:1000;flex-shrink:0}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.map-wrap{flex:1;position:relative}
+#map{width:100%;height:100%}
+.drone-info{position:absolute;top:12px;left:12px;z-index:1000}
+.info-card{background:rgba(2,8,23,0.9);border:1px solid rgba(14,165,233,0.2);border-radius:12px;padding:12px 14px;backdrop-filter:blur(10px);margin-bottom:8px}
+.info-title{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;color:#94a3b8;margin-bottom:8px}
+.info-row{display:flex;justify-content:space-between;margin-bottom:4px}
+.info-label{color:#334155;font-size:11px}
+.info-val{color:#0ea5e9;font-size:11px;font-weight:600;font-family:monospace}
+.mission-selector{display:flex;flex-direction:column;gap:4px}
+.mission-opt{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.1);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:11px;color:#94a3b8}
+.mission-opt.active{border-color:#0ea5e9;color:#0ea5e9;background:rgba(14,165,233,0.1)}
+.controls{background:rgba(2,8,23,0.95);border-top:1px solid rgba(14,165,233,0.12);padding:14px 16px;flex-shrink:0}
+.timeline{margin-bottom:12px}
+.timeline-top{display:flex;justify-content:space-between;margin-bottom:6px}
+.timeline-time{color:#94a3b8;font-size:11px;font-family:monospace}
+.scrubber{width:100%;height:4px;background:#0f172a;border-radius:999px;position:relative;cursor:pointer;margin-bottom:4px}
+.scrubber-fill{height:4px;background:linear-gradient(90deg,#0ea5e9,#06b6d4);border-radius:999px;transition:width 0.5s}
+.scrubber-dot{width:14px;height:14px;background:#0ea5e9;border-radius:50%;position:absolute;top:-5px;transform:translateX(-50%);box-shadow:0 0 8px #0ea5e9;transition:left 0.5s}
+.markers{display:flex;justify-content:space-between;padding:0 2px}
+.marker{color:#334155;font-size:9px;font-family:monospace}
+.btn-row{display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:12px}
+.ctrl-btn{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px}
+.btn-secondary{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.2)}
+.btn-primary{background:linear-gradient(135deg,#0ea5e9,#06b6d4);box-shadow:0 0 15px rgba(14,165,233,0.4);width:52px;height:52px;font-size:20px}
+.speed-row{display:flex;justify-content:center;gap:8px}
+.speed-btn{background:rgba(15,23,42,0.8);border:1px solid rgba(14,165,233,0.15);border-radius:6px;padding:4px 12px;color:#94a3b8;font-size:11px;font-family:'Orbitron',sans-serif;cursor:pointer}
+.speed-btn.active{border-color:#0ea5e9;color:#0ea5e9;background:rgba(14,165,233,0.1)}
+.telemetry-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+.tel-item{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.08);border-radius:10px;padding:8px;text-align:center}
+.tel-val{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#0ea5e9}
+.tel-lab{color:#334155;font-size:9px;margin-top:2px;letter-spacing:0.5px}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+  <a href="/droneops-apps/" class="back">← Home</a>
+</nav>
+
+<div class="content">
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div class="drone-info">
+      <div class="info-card">
+        <div class="info-title">SELECT MISSION</div>
+        <div class="mission-selector">
+          <div class="mission-opt active" onclick="selectMission(0,this)">FLT-001 — Falcon X1</div>
+          <div class="mission-opt" onclick="selectMission(1,this)">FLT-002 — Eagle Eye</div>
+          <div class="mission-opt" onclick="selectMission(2,this)">FLT-004 — Shadow Pro</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">LIVE TELEMETRY</div>
+        <div class="info-row"><span class="info-label">Altitude</span><span class="info-val" id="altVal">120m</span></div>
+        <div class="info-row"><span class="info-label">Speed</span><span class="info-val" id="spdVal">12 m/s</span></div>
+        <div class="info-row"><span class="info-label">Battery</span><span class="info-val" id="batVal">87%</span></div>
+        <div class="info-row"><span class="info-label">Distance</span><span class="info-val" id="distVal">2.4km</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="telemetry-strip">
+      <div class="tel-item"><div class="tel-val" id="t1">120m</div><div class="tel-lab">ALTITUDE</div></div>
+      <div class="tel-item"><div class="tel-val" id="t2">12</div><div class="tel-lab">M/S SPEED</div></div>
+      <div class="tel-item"><div class="tel-val" id="t3">87%</div><div class="tel-lab">BATTERY</div></div>
+      <div class="tel-item"><div class="tel-val" id="t4">2.4km</div><div class="tel-lab">DISTANCE</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-top">
+        <span class="timeline-time" id="currentTime">00:00</span>
+        <span class="timeline-time">47:00</span>
+      </div>
+      <div class="scrubber" id="scrubber" onclick="scrub(event)">
+        <div class="scrubber-fill" id="fill" style="width:0%"></div>
+        <div class="scrubber-dot" id="dot" style="left:0%"></div>
+      </div>
+      <div class="markers">
+        <span class="marker">00:00</span>
+        <span class="marker">12:00</span>
+        <span class="marker">24:00</span>
+        <span class="marker">36:00</span>
+        <span class="marker">47:00</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="ctrl-btn btn-secondary" onclick="restart()">⏮</button>
+      <button class="ctrl-btn btn-secondary" onclick="skipBack()">⏪</button>
+      <button class="ctrl-btn btn-primary" id="playBtn" onclick="togglePlay()">▶</button>
+      <button class="ctrl-btn btn-secondary" onclick="skipForward()">⏩</button>
+      <button class="ctrl-btn btn-secondary" onclick="goToEnd()">⏭</button>
+    </div>
+
+    <div class="speed-row">
+      <div class="speed-btn" onclick="setSpeed(0.5,this)">0.5x</div>
+      <div class="speed-btn active" onclick="setSpeed(1,this)">1x</div>
+      <div class="speed-btn" onclick="setSpeed(2,this)">2x</div>
+      <div class="speed-btn" onclick="setSpeed(4,this)">4x</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var map = L.map('map',{zoomControl:false}).setView([40.7128,-74.0060],13);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:19}).addTo(map);
+L.control.zoom({position:'topright'}).addTo(map);
+
+var missions = [
+  {
+    name:'Falcon X1',color:'#4ade80',
+    path:[[40.7100,-74.0100],[40.7115,-74.0080],[40.7128,-74.0060],[40.7145,-74.0040],[40.7160,-74.0020],[40.7180,-73.9990],[40.7200,-73.9960]],
+    alts:[50,80,120,115,130,125,100],spds:[8,10,12,12,11,13,10],bats:[90,89,87,85,83,81,79]
+  },
+  {
+    name:'Eagle Eye',color:'#0ea5e9',
+    path:[[40.7200,-73.9950],[40.7220,-73.9930],[40.7240,-73.9910],[40.7260,-73.9890],[40.7280,-73.9870]],
+    alts:[100,150,200,195,180],spds:[6,7,8,8,7],bats:[95,93,91,89,87]
+  },
+  {
+    name:'Shadow Pro',color:'#f87171',
+    path:[[40.7080,-73.9980],[40.7090,-73.9960],[40.7100,-73.9940],[40.7110,-73.9920]],
+    alts:[80,90,85,70],spds:[9,10,11,8],bats:[30,25,20,15]
+  }
+];
+
+var currentMission = 0;
+var progress = 0;
+var playing = false;
+var speed = 1;
+var interval = null;
+var droneMarker = null;
+var pathLine = null;
+var replayedPath = [];
+var replayLine = null;
+
+function droneIcon(color){
+  return L.divIcon({
+    className:'',
+    html:'<div style="background:'+color+';width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 0 12px '+color+';font-size:16px;">🛸</div>',
+    iconSize:[32,32],iconAnchor:[16,16]
+  });
+}
+
+function loadMission(idx){
+  var m = missions[idx];
+  if(droneMarker) map.removeLayer(droneMarker);
+  if(pathLine) map.removeLayer(pathLine);
+  if(replayLine) map.removeLayer(replayLine);
+  replayedPath = [];
+  pathLine = L.polyline(m.path,{color:m.color,weight:2,opacity:0.3,dashArray:'4,4'}).addTo(map);
+  droneMarker = L.marker(m.path[0],{icon:droneIcon(m.color)}).addTo(map);
+  map.setView(m.path[0],13);
+  updateTelemetry(0);
+}
+
+function updateTelemetry(idx){
+  var m = missions[currentMission];
+  var i = Math.min(idx, m.path.length-1);
+  document.getElementById('altVal').textContent = m.alts[i]+'m';
+  document.getElementById('spdVal').textContent = m.spds[i]+' m/s';
+  document.getElementById('batVal').textContent = m.bats[i]+'%';
+  document.getElementById('t1').textContent = m.alts[i]+'m';
+  document.getElementById('t2').textContent = m.spds[i];
+  document.getElementById('t3').textContent = m.bats[i]+'%';
+  var dist = (i * 0.4).toFixed(1);
+  document.getElementById('t4').textContent = dist+'km';
+  document.getElementById('distVal').textContent = dist+'km';
+}
+
+function updateProgress(){
+  var m = missions[currentMission];
+  var total = m.path.length - 1;
+  var idx = Math.floor(progress * total);
+  var pct = progress * 100;
+  document.getElementById('fill').style.width = pct+'%';
+  document.getElementById('dot').style.left = pct+'%';
+  var mins = Math.floor(progress * 47);
+  var secs = Math.floor((progress * 47 * 60) % 60);
+  document.getElementById('currentTime').textContent = String(mins).padStart(2,'0')+':'+String(secs).padStart(2,'0');
+  if(idx < m.path.length){
+    droneMarker.setLatLng(m.path[idx]);
+    replayedPath = m.path.slice(0, idx+1);
+    if(replayLine) map.removeLayer(replayLine);
+    if(replayedPath.length > 1){
+      replayLine = L.polyline(replayedPath,{color:m.color,weight:3,opacity:0.8}).addTo(map);
+    }
+    updateTelemetry(idx);
+  }
+}
+
+function togglePlay(){
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸' : '▶';
+  if(playing){
+    interval = setInterval(function(){
+      progress += 0.005 * speed;
+      if(progress >= 1){progress=1;playing=false;document.getElementById('playBtn').textContent='▶';clearInterval(interval);}
+      updateProgress();
+    }, 100);
+  } else {
+    clearInterval(interval);
+  }
+}
+
+function restart(){progress=0;updateProgress();}
+function goToEnd(){progress=1;updateProgress();}
+function skipBack(){progress=Math.max(0,progress-0.1);updateProgress();}
+function skipForward(){progress=Math.min(1,progress+0.1);updateProgress();}
+
+function scrub(e){
+  var rect = document.getElementById('scrubber').getBoundingClientRect();
+  progress = Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+  updateProgress();
+}
+
+function setSpeed(s,el){
+  speed=s;
+  document.querySelectorAll('.speed-btn').forEach(function(b){b.classList.remove('active')});
+  el.classList.add('active');
+}
+
+function selectMission(idx,el){
+  currentMission=idx;progress=0;
+  document.querySelectorAll('.mission-opt').forEach(function(b){b.classList.remove('active')});
+  el.classList.add('active');
+  if(playing){playing=false;clearInterval(interval);document.getElementById('playBtn').textContent='▶';}
+  loadMission(idx);
+  updateProgress();
+}
+
+loadMission(0);
+</script>
+</body>
+</html>
