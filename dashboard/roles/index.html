@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — User Roles</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px;padding-top:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none;display:block;margin-bottom:20px}
+h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.sub{color:#334155;font-size:13px;margin-bottom:24px}
+.sec{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#94a3b8;margin-bottom:14px}
+.roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.role-card{border-radius:16px;padding:16px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.role-card.active{transform:scale(1.02)}
+.role-admin{background:rgba(14,165,233,0.08);border:2px solid rgba(14,165,233,0.4)}
+.role-pilot{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2)}
+.role-observer{background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2)}
+.role-maintenance{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2)}
+.role-icon{font-size:28px;margin-bottom:8px}
+.role-name{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;letter-spacing:1px;margin-bottom:4px}
+.role-desc{font-size:11px;line-height:1.4}
+.role-badge{position:absolute;top:10px;right:10px;padding:3px 8px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:0.5px}
+.current-badge{background:rgba(14,165,233,0.2);color:#0ea5e9}
+.panel{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;padding:16px;margin-bottom:16px}
+.panel-title{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:1px;margin-bottom:14px}
+.perm-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(14,165,233,0.05)}
+.perm-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.perm-icon{font-size:16px;flex-shrink:0}
+.perm-text{flex:1}
+.perm-name{color:white;font-size:13px;font-weight:500;margin-bottom:2px}
+.perm-desc{color:#334155;font-size:11px}
+.perm-status{font-size:11px;font-weight:600;flex-shrink:0}
+.allowed{color:#4ade80}
+.denied{color:#f87171}
+.limited{color:#facc15}
+.team-card{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white;flex-shrink:0}
+.member-name{color:white;font-size:14px;font-weight:600;margin-bottom:2px}
+.member-email{color:#334155;font-size:11px;margin-bottom:4px}
+.member-role{font-size:10px;font-weight:700;letter-spacing:0.5px;padding:3px 8px;border-radius:999px}
+.add-btn{width:100%;background:rgba(14,165,233,0.08);border:1px dashed rgba(14,165,233,0.2);border-radius:14px;padding:14px;text-align:center;color:#0ea5e9;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px;cursor:pointer;margin-bottom:24px}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+</nav>
+<a href="/droneops-apps/" class="back">← Home</a>
+<h1>USER ROLES</h1>
+<p class="sub">Manage team access and permissions</p>
+
+<p class="sec">SELECT ROLE VIEW</p>
+<div class="roles-grid">
+  <div class="role-card role-admin active" onclick="showRole('admin')">
+    <span class="role-badge current-badge">CURRENT</span>
+    <div class="role-icon">👑</div>
+    <div class="role-name" style="color:#0ea5e9">ADMIN</div>
+    <div class="role-desc" style="color:#94a3b8">Full system access and control</div>
+  </div>
+  <div class="role-card role-pilot" onclick="showRole('pilot')">
+    <div class="role-icon">🎮</div>
+    <div class="role-name" style="color:#4ade80">PILOT</div>
+    <div class="role-desc" style="color:#94a3b8">Flight operations and logs</div>
+  </div>
+  <div class="role-card role-observer" onclick="showRole('observer')">
+    <div class="role-icon">👁</div>
+    <div class="role-name" style="color:#facc15">OBSERVER</div>
+    <div class="role-desc" style="color:#94a3b8">View only access</div>
+  </div>
+  <div class="role-card role-maintenance" onclick="showRole('maintenance')">
+    <div class="role-icon">🔧</div>
+    <div class="role-name" style="color:#f87171">MAINTENANCE</div>
+    <div class="role-desc" style="color:#94a3b8">Technical and repair access</div>
+  </div>
+</div>
+
+<div id="rolePanel"></div>
+
+<p class="sec">TEAM MEMBERS</p>
+<div class="team-card">
+  <div class="avatar" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4)">JM</div>
+  <div style="flex:1">
+    <div class="member-name">J. Martinez</div>
+    <div class="member-email">j.martinez@droneops.io</div>
+    <span class="member-role" style="background:rgba(14,165,233,0.1);color:#0ea5e9">ADMIN</span>
+  </div>
+</div>
+<div class="team-card">
+  <div class="avatar" style="background:linear-gradient(135deg,#4ade80,#22c55e)">SJ</div>
+  <div style="flex:1">
+    <div class="member-name">S. Johnson</div>
+    <div class="member-email">s.johnson@droneops.io</div>
+    <span class="member-role" style="background:rgba(34,197,94,0.1);color:#4ade80">PILOT</span>
+  </div>
+</div>
+<div class="team-card">
+  <div class="avatar" style="background:linear-gradient(135deg,#facc15,#eab308)">AC</div>
+  <div style="flex:1">
+    <div class="member-name">A. Chen</div>
+    <div class="member-email">a.chen@droneops.io</div>
+    <span class="member-role" style="background:rgba(234,179,8,0.1);color:#facc15">PILOT</span>
+  </div>
+</div>
+<div class="team-card">
+  <div class="avatar" style="background:linear-gradient(135deg,#f87171,#ef4444)">KW</div>
+  <div style="flex:1">
+    <div class="member-name">K. Williams</div>
+    <div class="member-email">k.williams@droneops.io</div>
+    <span class="member-role" style="background:rgba(239,68,68,0.1);color:#f87171">MAINTENANCE</span>
+  </div>
+</div>
+<div class="team-card">
+  <div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">RO</div>
+  <div style="flex:1">
+    <div class="member-name">R. Observer</div>
+    <div class="member-email">r.observer@droneops.io</div>
+    <span class="member-role" style="background:rgba(167,139,250,0.1);color:#a78bfa">OBSERVER</span>
+  </div>
+</div>
+<div class="add-btn">+ INVITE TEAM MEMBER</div>
+
+<script>
+var roles = {
+  admin: {
+    title: 'ADMIN PERMISSIONS',
+    color: '#0ea5e9',
+    perms: [
+      {icon:'🛸',name:'Fleet Management',desc:'Add, edit, remove drones',status:'allowed'},
+      {icon:'📋',name:'Flight Logs',desc:'View and edit all logs',status:'allowed'},
+      {icon:'📍',name:'Mission Planning',desc:'Create and launch missions',status:'allowed'},
+      {icon:'👥',name:'User Management',desc:'Invite and manage team',status:'allowed'},
+      {icon:'⚙️',name:'System Settings',desc:'Full settings access',status:'allowed'},
+      {icon:'📊',name:'Analytics',desc:'All reports and exports',status:'allowed'},
+      {icon:'💳',name:'Billing',desc:'Manage subscription',status:'allowed'},
+    ]
+  },
+  pilot: {
+    title: 'PILOT PERMISSIONS',
+    color: '#4ade80',
+    perms: [
+      {icon:'🛸',name:'Fleet Management',desc:'View assigned drones only',status:'limited'},
+      {icon:'📋',name:'Flight Logs',desc:'View and create own logs',status:'limited'},
+      {icon:'📍',name:'Mission Planning',desc:'Create missions, needs approval',status:'limited'},
+      {icon:'👥',name:'User Management',desc:'No access',status:'denied'},
+      {icon:'⚙️',name:'System Settings',desc:'Profile settings only',status:'limited'},
+      {icon:'📊',name:'Analytics',desc:'Own flight analytics only',status:'limited'},
+      {icon:'💳',name:'Billing',desc:'No access',status:'denied'},
+    ]
+  },
+  observer: {
+    title: 'OBSERVER PERMISSIONS',
+    color: '#facc15',
+    perms: [
+      {icon:'🛸',name:'Fleet Management',desc:'View only',status:'limited'},
+      {icon:'📋',name:'Flight Logs',desc:'View only',status:'limited'},
+      {icon:'📍',name:'Mission Planning',desc:'No access',status:'denied'},
+      {icon:'👥',name:'User Management',desc:'No access',status:'denied'},
+      {icon:'⚙️',name:'System Settings',desc:'No access',status:'denied'},
+      {icon:'📊',name:'Analytics',desc:'View reports only',status:'limited'},
+      {icon:'💳',name:'Billing',desc:'No access',status:'denied'},
+    ]
+  },
+  maintenance: {
+    title: 'MAINTENANCE PERMISSIONS',
+    color: '#f87171',
+    perms: [
+      {icon:'🛸',name:'Fleet Management',desc:'View and update drone status',status:'limited'},
+      {icon:'📋',name:'Flight Logs',desc:'View only',status:'limited'},
+      {icon:'📍',name:'Mission Planning',desc:'No access',status:'denied'},
+      {icon:'👥',name:'User Management',desc:'No access',status:'denied'},
+      {icon:'⚙️',name:'System Settings',desc:'No access',status:'denied'},
+      {icon:'📊',name:'Analytics',desc:'Maintenance reports only',status:'limited'},
+      {icon:'💳',name:'Billing',desc:'No access',status:'denied'},
+    ]
+  }
+};
+
+function showRole(role) {
+  var r = roles[role];
+  var html = '<div class="panel"><div class="panel-title" style="color:'+r.color+'">'+r.title+'</div>';
+  r.perms.forEach(function(p) {
+    var statusText = p.status === 'allowed' ? '✅ Full' : p.status === 'limited' ? '⚡ Limited' : '❌ None';
+    var statusClass = p.status === 'allowed' ? 'allowed' : p.status === 'limited' ? 'limited' : 'denied';
+    html += '<div class="perm-item">'+
+      '<span class="perm-icon">'+p.icon+'</span>'+
+      '<div class="perm-text">'+
+        '<div class="perm-name">'+p.name+'</div>'+
+        '<div class="perm-desc">'+p.desc+'</div>'+
+      '</div>'+
+      '<span class="perm-status '+statusClass+'">'+statusText+'</span>'+
+    '</div>';
+  });
+  html += '</div>';
+  document.getElementById('rolePanel').innerHTML = html;
+}
+
+showRole('admin');
+</script>
+
+</body>
+</html>
