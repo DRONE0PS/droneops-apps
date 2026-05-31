@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Telemetry Feed</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px;padding-top:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none;display:block;margin-bottom:20px}
+h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.sub{color:#334155;font-size:13px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.stat{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:14px;padding:14px;text-align:center}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900}
+.stat-lab{color:#334155;font-size:10px;margin-top:4px}
+.sec{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#94a3b8;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);border-radius:999px;padding:4px 10px}
+.live-dot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.live-text{color:#4ade80;font-size:10px;font-weight:600;letter-spacing:1px}
+.feed{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.feed-item{padding:12px 16px;border-bottom:1px solid rgba(14,165,233,0.05);display:flex;align-items:flex-start;gap:12px;animation:fadeIn 0.5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.feed-time{color:#334155;font-size:11px;font-family:monospace;flex-shrink:0;margin-top:2px}
+.feed-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.feed-content{flex:1}
+.feed-drone{font-size:12px;font-weight:700;margin-bottom:2px}
+.feed-msg{color:#94a3b8;font-size:12px}
+.feed-val{font-size:11px;margin-top:2px;font-family:monospace}
+.type-info{background:rgba(14,165,233,0.1)}
+.type-success{background:rgba(34,197,94,0.1)}
+.type-warning{background:rgba(234,179,8,0.1)}
+.type-danger{background:rgba(239,68,68,0.1)}
+.drone-filter{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.filter-btn{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:999px;padding:6px 14px;font-size:11px;color:#94a3b8;white-space:nowrap;cursor:pointer;font-family:'Orbitron',sans-serif;letter-spacing:0.5px}
+.filter-btn.active{background:rgba(14,165,233,0.1);border-color:rgba(14,165,233,0.4);color:#0ea5e9}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+</nav>
+<a href="/droneops-apps/" class="back">← Home</a>
+<h1>TELEMETRY FEED</h1>
+<p class="sub">Real-time drone event monitoring</p>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val" style="color:#4ade80">2</div><div class="stat-lab">ACTIVE</div></div>
+  <div class="stat"><div class="stat-val" style="color:#facc15">1</div><div class="stat-lab">WARNING</div></div>
+  <div class="stat"><div class="stat-val" style="color:#f87171">1</div><div class="stat-lab">ALERT</div></div>
+</div>
+
+<div class="drone-filter">
+  <div class="filter-btn active">ALL DRONES</div>
+  <div class="filter-btn">FALCON X1</div>
+  <div class="filter-btn">EAGLE EYE</div>
+  <div class="filter-btn">RAPTOR V2</div>
+  <div class="filter-btn">SHADOW PRO</div>
+</div>
+
+<div class="sec">
+  <span>LIVE EVENT LOG</span>
+  <div class="live-badge">
+    <div class="live-dot"></div>
+    <span class="live-text">LIVE</span>
+  </div>
+</div>
+
+<div class="feed" id="feed">
+  <div class="feed-item">
+    <span class="feed-time">12:34:01</span>
+    <div class="feed-icon type-success">✅</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#4ade80">FALCON X1</div>
+      <div class="feed-msg">Takeoff Successful</div>
+      <div class="feed-val" style="color:#4ade80">Alt: 0m → 50m</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:34:15</span>
+    <div class="feed-icon type-info">📍</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#0ea5e9">FALCON X1</div>
+      <div class="feed-msg">Reached Waypoint A</div>
+      <div class="feed-val" style="color:#0ea5e9">40.7128, -74.0060</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:34:48</span>
+    <div class="feed-icon type-info">🔋</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#0ea5e9">EAGLE EYE</div>
+      <div class="feed-msg">Battery Status Update</div>
+      <div class="feed-val" style="color:#4ade80">87% — Nominal</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:35:12</span>
+    <div class="feed-icon type-warning">⚠️</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#facc15">FALCON X1</div>
+      <div class="feed-msg">Object Detected</div>
+      <div class="feed-val" style="color:#facc15">Distance: 15m — Avoiding</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:35:30</span>
+    <div class="feed-icon type-success">✅</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#4ade80">FALCON X1</div>
+      <div class="feed-msg">Obstacle Avoided Successfully</div>
+      <div class="feed-val" style="color:#4ade80">Resuming mission</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:35:45</span>
+    <div class="feed-icon type-info">📍</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#0ea5e9">EAGLE EYE</div>
+      <div class="feed-msg">Reached Waypoint B</div>
+      <div class="feed-val" style="color:#0ea5e9">40.7200, -73.9950</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:36:02</span>
+    <div class="feed-icon type-danger">🚨</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#f87171">RAPTOR V2</div>
+      <div class="feed-msg">Low Battery Warning</div>
+      <div class="feed-val" style="color:#f87171">Battery: 15% — Return Home</div>
+    </div>
+  </div>
+  <div class="feed-item">
+    <span class="feed-time">12:36:20</span>
+    <div class="feed-icon type-info">🌡️</div>
+    <div class="feed-content">
+      <div class="feed-drone" style="color:#0ea5e9">FALCON X1</div>
+      <div class="feed-msg">Temperature Reading</div>
+      <div class="feed-val" style="color:#0ea5e9">Motor Temp: 42°C — Normal</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var events = [
+  {time:'', icon:'📍', type:'info', drone:'FALCON X1', color:'#0ea5e9', msg:'Reached Waypoint C', val:'40.7150, -74.0020'},
+  {time:'', icon:'🔋', type:'info', drone:'EAGLE EYE', color:'#0ea5e9', msg:'Battery Status Update', val:'85% — Nominal'},
+  {time:'', icon:'✅', type:'success', drone:'EAGLE EYE', color:'#4ade80', msg:'Mission 75% Complete', val:'ETA: 8 minutes'},
+  {time:'', icon:'⚠️', type:'warning', drone:'SHADOW PRO', color:'#facc15', msg:'Maintenance Required', val:'Motor vibration detected'},
+  {time:'', icon:'📡', type:'info', drone:'FALCON X1', color:'#0ea5e9', msg:'Signal Strength', val:'RSSI: -65dBm — Strong'},
+  {time:'', icon:'🌡️', type:'info', drone:'RAPTOR V2', color:'#0ea5e9', msg:'Temperature Reading', val:'Battery Temp: 38°C — Normal'},
+];
+
+var ei = 0;
+setInterval(function(){
+  var now = new Date();
+  var t = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+  var e = events[ei];
+  var feed = document.getElementById('feed');
+  var item = document.createElement('div');
+  item.className = 'feed-item';
+  item.innerHTML =
+    '<span class="feed-time">'+t+'</span>'+
+    '<div class="feed-icon type-'+e.type+'">'+e.icon+'</div>'+
+    '<div class="feed-content">'+
+      '<div class="feed-drone" style="color:'+e.color+'">'+e.drone+'</div>'+
+      '<div class="feed-msg">'+e.msg+'</div>'+
+      '<div class="feed-val" style="color:'+e.color+'">'+e.val+'</div>'+
+    '</div>';
+  feed.insertBefore(item, feed.firstChild);
+  if(feed.children.length > 10) feed.removeChild(feed.lastChild);
+  ei = (ei+1) % events.length;
+}, 4000);
+</script>
+
+</body>
+</html>
