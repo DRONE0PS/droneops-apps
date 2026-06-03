@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;min-height:100vh;padding:20px;position:relative;overflow-x:hidden}
+.glow{position:fixed;top:30%;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(14,165,233,0.1) 0%,transparent 70%);pointer-events:none}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(14,165,233,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.wrap{max-width:360px;margin:0 auto;position:relative;z-index:1}
+.logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;padding-top:20px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:16px;color:white}
+.logo-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:16px;letter-spacing:2px}
+.card{background:rgba(15,23,42,0.9);border:1px solid rgba(14,165,233,0.15);border-radius:20px;padding:20px;width:100%}
+.card-title{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;margin-bottom:4px;text-align:center}
+.card-sub{color:#334155;font-size:12px;text-align:center;margin-bottom:20px}
+.label{color:#94a3b8;font-size:11px;font-weight:500;letter-spacing:0.5px;margin-bottom:6px;display:block}
+.input{width:100%;background:rgba(2,8,23,0.8);border:1px solid rgba(14,165,233,0.15);border-radius:10px;padding:12px 14px;color:white;font-size:14px;font-family:'Inter',sans-serif;margin-bottom:12px;outline:none;-webkit-appearance:none}
+.input::placeholder{color:#334155}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.plan-opt{background:rgba(2,8,23,0.8);border:2px solid rgba(14,165,233,0.1);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.plan-opt:active{transform:scale(0.95)}
+.plan-opt.active{border-color:#0ea5e9;background:rgba(14,165,233,0.15);box-shadow:0 0 12px rgba(14,165,233,0.2)}
+.plan-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:#0ea5e9;margin-bottom:3px}
+.plan-price{color:#94a3b8;font-size:11px;margin-bottom:4px}
+.plan-check{font-size:14px;opacity:0}
+.plan-opt.active .plan-check{opacity:1}
+.plan-features{color:#334155;font-size:9px;line-height:1.4;margin-top:4px}
+.plan-opt.active .plan-features{color:#64748b}
+.btn{width:100%;background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;padding:14px;border-radius:10px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;border:none;cursor:pointer;box-shadow:0 0 20px rgba(14,165,233,0.3);margin-bottom:14px;text-align:center;display:block;text-decoration:none}
+.terms{color:#334155;font-size:11px;text-align:center;margin-bottom:14px;line-height:1.5}
+.terms a{color:#0ea5e9;text-decoration:none}
+.login-text{text-align:center;color:#334155;font-size:12px}
+.login-link{color:#0ea5e9;text-decoration:none;font-weight:600}
+.home-link{color:#334155;font-size:12px;text-decoration:none;margin-top:16px;margin-bottom:24px;display:block;text-align:center}
+.selected-plan{text-align:center;color:#0ea5e9;font-size:11px;font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:12px;min-height:16px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="grid-bg"></div>
+<div class="wrap">
+  <div class="logo-wrap">
+    <div class="logo-icon">D</div>
+    <span class="logo-text">DRONEOPS</span>
+  </div>
+  <div class="card">
+    <div class="card-title">CREATE ACCOUNT</div>
+    <div class="card-sub">Start managing your drone fleet today</div>
+    <label class="label">FULL NAME</label>
+    <input class="input" type="text" placeholder="John Martinez">
+    <label class="label">COMPANY NAME</label>
+    <input class="input" type="text" placeholder="DroneOps Inc.">
+    <label class="label">EMAIL ADDRESS</label>
+    <input class="input" type="email" placeholder="operator@company.com">
+    <label class="label">PASSWORD</label>
+    <input class="input" type="password" placeholder="••••••••">
+    <label class="label">CONFIRM PASSWORD</label>
+    <input class="input" type="password" placeholder="••••••••">
+    <label class="label">SELECT YOUR PLAN</label>
+    <div class="plan-grid">
+      <div class="plan-opt active" id="plan-free" onclick="selectPlan('free',this)">
+        <div class="plan-name">FREE</div>
+        <div class="plan-price">$0/mo</div>
+        <div class="plan-check">✅</div>
+        <div class="plan-features">2 drones<br>Basic logs<br>15 day history</div>
+      </div>
+      <div class="plan-opt" id="plan-pro" onclick="selectPlan('pro',this)">
+        <div class="plan-name">PRO</div>
+        <div class="plan-price">$21/mo</div>
+        <div class="plan-check">✅</div>
+        <div class="plan-features">20 drones<br>Analytics<br>30 day history</div>
+      </div>
+      <div class="plan-opt" id="plan-enterprise" onclick="selectPlan('enterprise',this)">
+        <div class="plan-name">ENT.</div>
+        <div class="plan-price">$55/mo</div>
+        <div class="plan-check">✅</div>
+        <div class="plan-features">50 drones<br>Team access<br>API access</div>
+      </div>
+    </div>
+    <div class="selected-plan" id="selectedPlan">✓ FREE PLAN SELECTED</div>
+    <a href="/dashboard/" class="btn" id="createBtn">CREATE ACCOUNT — FREE</a>
+    <div class="terms">
+      By creating an account you agree to our
+      <a href="#">Terms of Service</a> and
+      <a href="#">Privacy Policy</a>
+    </div>
+    <div class="login-text">
+      Already have an account?
+      <a href="/login/" class="login-link">Sign in</a>
+    </div>
+  </div>
+  <a href="/" class="home-link">← Back to Home</a>
+</div>
+<script>
+function selectPlan(plan, el) {
+  document.querySelectorAll('.plan-opt').forEach(function(p){p.classList.remove('active')});
+  el.classList.add('active');
+  var plans = {
+    free: {label:'FREE PLAN SELECTED', btn:'CREATE ACCOUNT — FREE'},
+    pro: {label:'PRO PLAN SELECTED — $21/mo', btn:'CREATE ACCOUNT — PRO $21/mo'},
+    enterprise: {label:'ENTERPRISE SELECTED — $55/mo', btn:'CREATE ACCOUNT — ENT. $55/mo'}
+  };
+  document.getElementById('selectedPlan').textContent = '✓ ' + plans[plan].label;
+  document.getElementById('createBtn').textContent = plans[plan].btn;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroneOps — Flight Logs</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020817;color:white;font-family:'Inter',sans-serif;padding:16px;padding-top:80px}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,23,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(14,165,233,0.12)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;color:white}
+.nav-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px}
+.back{color:#0ea5e9;font-size:13px;text-decoration:none;display:block;margin-bottom:20px}
+h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.sub{color:#334155;font-size:13px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.stat{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:14px;padding:14px;text-align:center}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;background:linear-gradient(135deg,#0ea5e9,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lab{color:#334155;font-size:10px;margin-top:4px}
+.sec{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#94a3b8;margin-bottom:14px}
+.card{background:rgba(15,23,42,0.6);border:1px solid rgba(14,165,233,0.1);border-radius:16px;padding:16px;margin-bottom:12px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.fid{color:#0ea5e9;font-size:11px;font-family:monospace}
+.fname{color:white;font-size:14px;font-weight:600;margin-bottom:2px}
+.fpilot{color:#334155;font-size:12px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between}
+.rlabel{color:#334155;font-size:10px;letter-spacing:0.5px;margin-bottom:2px}
+.rval{color:#94a3b8;font-size:13px;font-weight:600}
+.badge{padding:4px 10px;border-radius:999px;font-size:10px;font-weight:600}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">D</div>
+    <span class="nav-text">DRONEOPS</span>
+  </div>
+</nav>
+<a href="/" class="back">← Home</a>
+<h1>FLIGHT LOGS</h1>
+<p class="sub">Complete mission history and records</p>
+<div class="stats">
+  <div class="stat"><div class="stat-val">247</div><div class="stat-lab">FLIGHTS</div></div>
+  <div class="stat"><div class="stat-val">1,247h</div><div class="stat-lab">HOURS</div></div>
+  <div class="stat"><div class="stat-val">8,432km</div><div class="stat-lab">DISTANCE</div></div>
+</div>
+<p class="sec">RECENT MISSIONS</p>
+<div class="card">
+  <div class="top"><div class="fid">FLT-001</div><span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">COMPLETED</span></div>
+  <div class="fname">Falcon X1</div>
+  <div class="fpilot">Pilot: J. Martinez · May 22, 2025</div>
+  <div class="row"><div><div class="rlabel">DURATION</div><div class="rval">47m</div></div><div><div class="rlabel">DISTANCE</div><div class="rval">12.4km</div></div><div><div class="rlabel">MAX ALT</div><div class="rval">120m</div></div></div>
+</div>
+<div class="card">
+  <div class="top"><div class="fid">FLT-002</div><span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">COMPLETED</span></div>
+  <div class="fname">Eagle Eye</div>
+  <div class="fpilot">Pilot: S. Johnson · May 22, 2025</div>
+  <div class="row"><div><div class="rlabel">DURATION</div><div class="rval">1h 12m</div></div><div><div class="rlabel">DISTANCE</div><div class="rval">28.7km</div></div><div><div class="rlabel">MAX ALT</div><div class="rval">200m</div></div></div>
+</div>
+<div class="card">
+  <div class="top"><div class="fid">FLT-003</div><span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171">ABORTED</span></div>
+  <div class="fname">Raptor V2</div>
+  <div class="fpilot">Pilot: A. Chen · May 21, 2025</div>
+  <div class="row"><div><div class="rlabel">DURATION</div><div class="rval">33m</div></div><div><div class="rlabel">DISTANCE</div><div class="rval">8.1km</div></div><div><div class="rlabel">MAX ALT</div><div class="rval">85m</div></div></div>
+</div>
+<div class="card">
+  <div class="top"><div class="fid">FLT-004</div><span class="badge" style="background:rgba(34,197,94,0.15);color:#4ade80">COMPLETED</span></div>
+  <div class="fname">Shadow Pro</div>
+  <div class="fpilot">Pilot: K. Williams · May 21, 2025</div>
+  <div class="row"><div><div class="rlabel">DURATION</div><div class="rval">2h 05m</div></div><div><div class="rlabel">DISTANCE</div><div class="rval">45.2km</div></div><div><div class="rlabel">MAX ALT</div><div class="rval">150m</div></div></div>
+</div>
+</body>
+</html>
