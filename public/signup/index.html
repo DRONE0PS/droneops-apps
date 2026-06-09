@@ -126,7 +126,7 @@ window.handleSignup = async function() {
       return
     }
     if (data && data.user) {
-      showMsg('success', 'User created! Saving profile...')
+      showMsg('success', 'Account created! Sending welcome email...')
       await supabase.from('profiles').insert({
         id: data.user.id,
         full_name: fullName,
@@ -134,12 +134,21 @@ window.handleSignup = async function() {
         plan: selectedPlan,
         role: 'admin'
       })
-      showMsg('success', 'Account created! Redirecting to dashboard...')
-      setTimeout(() => { window.location.href = '/dashboard' }, 2000)
-    } else {
-      showMsg('error', 'Something went wrong. Please try again.')
-      btn.textContent = 'CREATE ACCOUNT'
-      btn.disabled = false
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer re_5qqPt5Dh_L4ejmYY5RHAorQ11oaypAg9U',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'DroneOps <onboarding@resend.dev>',
+          to: email,
+          subject: 'Welcome to DroneOps! 🛸',
+          html: '<div style="background:#020817;padding:40px;font-family:Arial,sans-serif"><h1 style="color:#0ea5e9">Welcome to DroneOps! 🛸</h1><p style="color:#94a3b8;margin:16px 0">Hi ' + fullName + ', your account is ready!</p><p style="color:#94a3b8;margin-bottom:24px">Start managing your drone fleet today.</p><a href="https://droneops-app.vercel.app/login" style="background:#0ea5e9;color:white;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold">LAUNCH DRONEOPS</a><p style="color:#334155;margin-top:32px;font-size:12px">© 2025 DroneOps</p></div>'
+        })
+      })
+      showMsg('success', 'Account created! Check your email for welcome message!')
+      setTimeout(() => { window.location.href = '/dashboard' }, 3000)
     }
   } catch(err) {
     showMsg('error', 'Error: ' + err.message)
